@@ -1,0 +1,96 @@
+html, body {
+    height: 100%;
+    background-color: rgba(131, 131, 131, 0.671);
+}
+
+body {
+    font-family: 'Roboto';
+    text-align: center;
+    color: #000000;
+    margin: 0;
+}
+
+*, *:visited, *:hover, *:focus, *:active {
+    text-decoration: none;
+}
+
+main {
+    max-width: 200rem;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin: auto;
+}
+
+/* Header et navbar */
+
+header {
+    width: 100%;
+}
+
+.nav-container {
+    width: 100%;
+    box-shadow: 0rem 0.5rem 1.5rem 0rem rgba(0,0,0,0.4);
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
+    margin: auto auto;
+    width: 90rem;
+    height: 100%;
+    justify-content: center;
+}
+
+.nav .logo {
+    font-weight: 500;
+    color: black;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 1.5% 2% 1.5% 2%;
+    width: 5rem;
+    float: left;
+}
+
+.nav-text {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 35rem;
+    align-items: center;
+}
+
+.nav-text p {
+    display: block;
+    font-weight: 400;
+    color: rgb(0, 0, 0);
+    font-size: 1.3rem;
+    margin-right: 4%;
+    align-self: center;
+}
+
+.timer {
+    display: block;
+    font-weight: 400;
+    color: rgb(0, 0, 0);
+    font-size: 1.3rem;
+    margin-right: 4%;
+    align-self: center;
+}
+
+/* Footer */
+
+footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+}
+
+/* Éléments de décoration */
+
+.vertical-bar {
+    border-left: 0.2rem solid black;
+    height: 3rem;
+}

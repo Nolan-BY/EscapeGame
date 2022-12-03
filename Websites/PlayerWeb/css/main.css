@@ -75,3 +75,145 @@ header {
     margin-right: 4%;
     align-self: center;
 }
+
+/* Alerte info */
+
+.alerte-info {
+    background-color: rgba(255, 32, 32, 0.671);
+    width: 100%;
+    height: fit-content;
+    box-shadow: 0rem 0.5rem 1.5rem 0rem rgba(0,0,0,0.4);
+}
+
+.alerte-info-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
+    margin: auto auto;
+    width: 90rem;
+    height: 100%;
+    justify-content: center;
+}
+
+.logo-alerte-info {
+    font-weight: 500;
+    color: black;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 10rem;
+    float: left;
+    align-self: center;
+}
+
+.logo-alerte-info img {
+    width: 6rem;
+    margin-top: 1rem;
+}
+
+.alerte-info-description {
+    font-weight: 500;
+    color: black;
+    font-size: 1.5rem;
+    max-width: max-content;
+    margin-left: 5rem;
+    align-self: center;
+}
+
+/* Quick Cards */
+
+.quick-cards {
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+}
+
+.card {
+    position: relative;
+    margin: auto;
+    margin-bottom: 1.5rem;
+    top: 3.5rem;
+    width: 90rem;
+    min-height: 15rem;
+    height: max-content;
+    background-size: cover;
+    background-position: center;
+}
+
+#first-card {
+    min-height: 20rem;
+    width: 100%;
+}
+
+.card a {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: azure;
+}
+
+.card img {
+    filter: invert(200%) sepia(200%) saturate(0%) hue-rotate(168deg) brightness(130%) contrast(100%);
+    width: 2rem;
+    display: flex;
+    position: absolute;
+    right: 5rem;
+    bottom: 2rem;
+}
+
+.card-category {
+    display: flex;
+    position: absolute;
+    font-weight: 500;
+    width: fit-content;
+    padding: 0.5rem 1.2rem 0.5rem 1.2rem;
+    border: 0.2rem azure solid;
+    border-radius: 50rem;
+}
+
+.card-title {
+    display: flex;
+    position: absolute;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+}
+
+#first-card .card-category {
+    font-size: 1.5rem;
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+#first-card .card-title {
+    font-size: 3rem;
+    margin-top: 9%;
+    margin-left: 5%;
+}
+
+.card .card-category {
+    font-size: 1.5rem;
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+.card .card-title {
+    font-size: 2rem;
+    margin-top: 9%;
+    margin-left: 5%;
+}
+
+/* Footer */
+
+footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+}
+
+/* Éléments de décoration */
+
+.vertical-bar {
+    border-left: 0.2rem solid black;
+    height: 3rem;
+}
