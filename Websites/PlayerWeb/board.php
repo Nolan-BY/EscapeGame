@@ -1,3 +1,4 @@
+<?php session_start(); include('./elements/countdown.php'); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -18,7 +19,7 @@
             <div class="nav">
                 <img class="logo" src="./assets/logo.svg" alt="" />
                 <div class="nav-text">
-                    <div class="countdown">10:00:00</div>
+                    <div class="countdown">10</div>
                 </div>
             </div>
         </div>
@@ -32,3 +33,25 @@
     </footer>
 </body>
 </html>
+<script type="text/javascript">
+    function countdown() {
+        var countDownDate = new Date(Date.parse('<?php echo $_SESSION['date']; ?>')).getTime();
+        console.log(countDownDate);
+        var now = new Date().getTime();
+        console.log(now);
+        var timeRemaining = countDownDate - now;
+        console.log(timeRemaining);
+
+        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        if(timeRemaining > 0) {
+            document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
+        } else {
+            document.getElementsByClassName("countdown")[0].innerText = "Time's up!";
+        }
+    }
+
+    setInterval(countdown, 1000);
+    countdown()
+</script>

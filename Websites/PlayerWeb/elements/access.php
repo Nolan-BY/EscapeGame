@@ -8,13 +8,13 @@
 
       $team_name = $_POST['team_name'];
 		
-      $sql_query = "select from users where username='".$username."' and password='".$password."'";
+      $sql_query = "select COUNT(*) from users where username='".$username."' and password='".$password."'";
       $result = mysqli_query($con,$sql_query);
-      $row = mysqli_fetch_array($result);
+      // $row = mysqli_fetch_array($result);
 
-      $count = $row['cntUser'];
+      // $count = $row['cntUser'];
 
-      if($count > 0){
+      if($result > 0){
          $_SESSION['user'] = $username;
          header("location: ../board.php");
       } else {

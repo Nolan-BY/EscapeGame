@@ -4,6 +4,7 @@
         header("location: ../board.php");
         die();
     }
+    include('./elements/countdown.php');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -29,7 +30,7 @@
                 <div class="nav-text">
                     <p>Accès au tableau de bord privé du CNRS</p>
                     <div class="vertical-bar" style="margin-right: 4%;"></div>
-                    <div class="countdown">10:00:00</div>
+                    <div class="countdown">10</div>
                 </div>
             </div>
         </div>
@@ -54,18 +55,24 @@
 </body>
 </html>
 <script type="text/javascript">
-    <?php include ('./elements/countdown.php'); ?>
-    var timeRemaining = <?php echo $_SESSION['countdown']; ?>;
-    var downloadTimer = setInterval(function () {
-        if (timeRemaining > 0) {
-            document.getElementsByClassName("countdown")[0].innerText = `${timeRemaining} secs left`;
-            <?php $_SESSION['countdown'] -= 1; ?>;
-            timeRemaining = <?php echo $_SESSION['countdown']; ?>;
-        }
+    function countdown() {
+        var countDownDate = new Date(Date.parse('<?php echo $_SESSION['date']; ?>')).getTime();
+        console.log(countDownDate);
+        var now = new Date().getTime();
+        console.log(now);
+        var timeRemaining = countDownDate - now;
+        console.log(timeRemaining);
 
-        if (timeRemaining <= 0) {
-            clearInterval(downloadTimer);
+        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        if(timeRemaining > 0) {
+            document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
+        } else {
             document.getElementsByClassName("countdown")[0].innerText = "Time's up!";
         }
-    }, 1000);
+    }
+
+    setInterval(countdown, 1000);
+    countdown()
 </script>
