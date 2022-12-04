@@ -8,11 +8,11 @@
         unset($_SESSION["date"]);
         header("location: ../index.php");
     }
-    
+
     if(isset($_SESSION['user'])){
         session_destroy();
-        header("location: ../login.php");
+        header("location: ../index.php");
     } else {
-        header("location: ../login.php");
+        header("location: ../index.php");
         die();
     }

@@ -25,7 +25,7 @@
         </div>
     </header>
     <main>
-        <a href="./elements/close_session.php">Destroy session</a>
+        <a href="./elements/reset.php">Destroy session</a>
         <p>Tableau de bord</p>
     </main>
     <footer>
