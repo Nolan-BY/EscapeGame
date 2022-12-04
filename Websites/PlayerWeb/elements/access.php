@@ -1,20 +1,24 @@
 <?php
-   
    if($_SERVER["REQUEST_METHOD"] == "POST") {
       
-      session_start();
+      include "config.php";
 
-      $username = $_POST['username'];
-      $password = $_POST['password'];
+      $username = mysqli_real_escape_string($con,$_POST['username']);
+      $password = mysqli_real_escape_string($con,$_POST['password']);
+
       $team_name = $_POST['team_name'];
 		
-      if($username=='iutchercheurs' && $password=='no_earthquake') {
+      $sql_query = "select from users where username='".$username."' and password='".$password."'";
+      $result = mysqli_query($con,$sql_query);
+      $row = mysqli_fetch_array($result);
+
+      $count = $row['cntUser'];
+
+      if($count > 0){
          $_SESSION['user'] = $username;
-         
          header("location: ../board.php");
       } else {
          $error = "Identifiants invalides !";
          header("location: ../login.php");
       }
    }
-?>

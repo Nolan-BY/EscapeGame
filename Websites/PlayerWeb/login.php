@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if(isset($_SESSION['user'])){
+        header("location: ../board.php");
+        die();
+    }
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,11 +23,13 @@
     <header>
         <div class="nav-container">
             <div class="nav">
-                <img class="logo" src="./assets/logo.svg" alt="" />
+                <a href="./index.php" class="logo">
+                    <img src="./assets/logo.svg" alt="" />
+                </a>
                 <div class="nav-text">
                     <p>Accès au tableau de bord privé du CNRS</p>
                     <div class="vertical-bar" style="margin-right: 4%;"></div>
-                    <div class="timer">10:00:00:00</div>
+                    <div class="countdown">10:00:00</div>
                 </div>
             </div>
         </div>
@@ -44,3 +53,19 @@
     </footer>
 </body>
 </html>
+<script type="text/javascript">
+    <?php include ('./elements/countdown.php'); ?>
+    var timeRemaining = <?php echo $_SESSION['countdown']; ?>;
+    var downloadTimer = setInterval(function () {
+        if (timeRemaining > 0) {
+            document.getElementsByClassName("countdown")[0].innerText = `${timeRemaining} secs left`;
+            <?php $_SESSION['countdown'] -= 1; ?>;
+            timeRemaining = <?php echo $_SESSION['countdown']; ?>;
+        }
+
+        if (timeRemaining <= 0) {
+            clearInterval(downloadTimer);
+            document.getElementsByClassName("countdown")[0].innerText = "Time's up!";
+        }
+    }, 1000);
+</script>

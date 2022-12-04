@@ -45,13 +45,13 @@ header {
 }
 
 .nav .logo {
-    font-weight: 500;
-    color: black;
-    font-size: 1.2rem;
-    text-align: center;
     margin: 1.5% 2% 1.5% 2%;
     width: 5rem;
     float: left;
+}
+
+.nav .logo img {
+    width: inherit;
 }
 
 .nav-text {
@@ -70,7 +70,7 @@ header {
     align-self: center;
 }
 
-.timer {
+.countdown {
     display: block;
     font-weight: 400;
     color: rgb(0, 0, 0);

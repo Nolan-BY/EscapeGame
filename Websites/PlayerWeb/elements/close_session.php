@@ -4,4 +4,8 @@
       session_destroy();
       header("location: ../login.php");
    }
+   elseif(!isset($_SESSION['user'])){
+      header("location: ../login.php");
+      die();
+   }
 ?>

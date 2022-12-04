@@ -70,7 +70,7 @@ header {
     align-self: center;
 }
 
-.timer {
+.countdown {
     display: block;
     font-weight: 400;
     color: rgb(0, 0, 0);
