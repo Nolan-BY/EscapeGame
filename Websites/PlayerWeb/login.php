@@ -18,7 +18,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
     </style>
-    <title>CNRS - Login</title>
+    <title>IRSCN - Login</title>
 </head>
 <body>
     <header>
@@ -28,7 +28,7 @@
                     <img src="./assets/logo.svg" alt="" />
                 </a>
                 <div class="nav-text">
-                    <p>Accès au tableau de bord privé du CNRS</p>
+                    <p>Accès au tableau de bord privé du IRSCN</p>
                     <div class="vertical-bar" style="margin-right: 4%;"></div>
                     <div class="countdown">10</div>
                 </div>

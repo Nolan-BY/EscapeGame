@@ -10,9 +10,6 @@
 		
       $sql_query = "select COUNT(*) from users where username='".$username."' and password='".$password."'";
       $result = mysqli_query($con,$sql_query);
-      // $row = mysqli_fetch_array($result);
-
-      // $count = $row['cntUser'];
 
       if($result > 0){
          $_SESSION['user'] = $username;

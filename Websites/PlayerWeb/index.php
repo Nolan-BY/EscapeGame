@@ -9,7 +9,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
     </style>
-    <title>CNRS</title>
+    <title>IRSCN</title>
 </head>
 <body>
     <header>
@@ -19,7 +19,7 @@
                     <img src="./assets/logo.svg" alt="" />
                 </a>
                 <div class="nav-buttons">
-                    <a href="./error.php">Le CNRS</a>
+                    <a href="./error.php">L'IRSCN</a>
                     <a href="./error.php">La Recherche</a>
                     <a href="./error.php">Innovation</a>
                     <a href="./error.php">International</a>
