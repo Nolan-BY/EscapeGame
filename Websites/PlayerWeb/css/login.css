@@ -56,18 +56,12 @@ header {
 
 .nav-text {
     display: flex;
-    justify-content: flex-end;
-    min-width: 35rem;
+    justify-content: center;
     align-items: center;
-}
-
-.nav-text p {
-    display: block;
+    min-width: 50rem;
     font-weight: 400;
     color: rgb(0, 0, 0);
     font-size: 1.3rem;
-    margin-right: 4%;
-    align-self: center;
 }
 
 .countdown {
@@ -77,6 +71,18 @@ header {
     font-size: 1.3rem;
     margin-right: 4%;
     align-self: center;
+}
+
+.penalties {
+    display: block;
+    font-weight: 400;
+    color: rgb(0, 0, 0);
+    font-size: 1.3rem;
+    align-self: center;
+    width: fit-content;
+    padding: 0.5rem 1.2rem 0.5rem 1.2rem;
+    border: 0.2rem rgb(0, 0, 0) solid;
+    border-radius: 50rem;
 }
 
 /* Formulaire */

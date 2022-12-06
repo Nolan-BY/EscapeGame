@@ -1,10 +1,9 @@
 <?php
-    session_start();
     if(isset($_SESSION['user'])){
         header("location: ../board.php");
         die();
     }
-    include('./elements/countdown.php');
+    include('./elements/init.php');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg" href="./assets/logo.svg">
     <script type="text/javascript" src="./js/cowntdown.js"></script>
-    <link rel="stylesheet" href="./css/login.css" />
+    <link rel="stylesheet" href="./css/login.css"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
     </style>
@@ -28,10 +27,11 @@
                     <img src="./assets/logo.svg" alt="" />
                 </a>
                 <div class="nav-text">
-                    <p>Accès au tableau de bord privé du IRSCN</p>
-                    <div class="vertical-bar" style="margin-right: 4%;"></div>
+                    <p>Accès au tableau de bord privé de l'IRSCN</p>
+                    <div class="vertical-bar" style="margin: 0 5rem 0 5rem;"></div>
                     <div class="countdown">10</div>
                 </div>
+                <p class="penalties">- x secondes</p>
             </div>
         </div>
     </header>
@@ -54,14 +54,20 @@
     </footer>
 </body>
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
     function countdown() {
+        var penalties = 0;
+        $.ajax({
+            url:"./elements/penalties.php",
+            async: false,
+            success:function(data){
+                penalties = data;
+            }
+        });
         var countDownDate = new Date(Date.parse('<?php echo $_SESSION['date']; ?>')).getTime();
-        console.log(countDownDate);
         var now = new Date().getTime();
-        console.log(now);
-        var timeRemaining = countDownDate - now;
-        console.log(timeRemaining);
+        var timeRemaining = (countDownDate - (penalties * 1000)) - now;
 
         var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
@@ -70,6 +76,14 @@
             document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
         } else {
             document.getElementsByClassName("countdown")[0].innerText = "Time's up!";
+        }
+
+        if(penalties >= 1) {
+            document.getElementsByClassName("penalties")[0].innerText = `${penalties} secondes de pénalité`;
+            document.getElementsByClassName("penalties")[0].style.color = "red";
+        } else {
+            document.getElementsByClassName("penalties")[0].innerText = `${penalties} seconde de pénalité`;
+            document.getElementsByClassName("penalties")[0].style.color = "lime";
         }
     }
 
