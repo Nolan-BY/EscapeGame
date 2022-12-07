@@ -53,10 +53,14 @@
         var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
+        if(seconds < 10) {
+            seconds = `0${seconds}`
+        }
+
         if(timeRemaining > 0) {
             document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
         } else {
-            document.getElementsByClassName("countdown")[0].innerText = "Time's up!";
+            document.getElementsByClassName("countdown")[0].innerText = "Le temps est écoulé !";
         }
 
         if(penalties >= 1) {

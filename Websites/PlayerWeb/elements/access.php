@@ -4,19 +4,18 @@
       session_start();
       include "config.php";
 
-      $username = mysqli_real_escape_string($con,$_POST['username']);
-      $password = mysqli_real_escape_string($con,$_POST['password']);
+      $username = mysqli_real_escape_string($con, $_POST['username']);
+      $password = mysqli_real_escape_string($con, $_POST['password']);
 
       $team_name = $_POST['team_name'];
 		
-      $sql_query = "SELECT COUNT(*) FROM users WHERE username='".$username."' AND password='".$password."'";
-      $result = mysqli_query($con, $sql_query);
+      $result = mysqli_fetch_array(mysqli_query($con, "SELECT count(*) as cntUser FROM users WHERE username='".$username."' AND password='".$password."'"));
 
-      if($result > 0){
+      if($result['cntUser'] > 0){
          $_SESSION['user'] = $username;
          header("location: ../board.php");
       } else {
-         $error = "Identifiants invalides !";
+         mysqli_query($con, "UPDATE gamecontrol SET penalties= penalties + 10 LIMIT 1");
          header("location: ../login.php");
       }
    }

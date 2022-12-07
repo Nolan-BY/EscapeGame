@@ -22,5 +22,3 @@
 
     session_destroy();
     header("location: ../index.php");
-
-    // WHERE penalties=(SELECT penalties FROM gamecontrol LIMIT 1)

@@ -36,12 +36,6 @@
         </div>
     </header>
     <main>
-        <?php
-            include ('./elements/access.php');
-            if (isset($failed)) { ?>
-                <p id="error"><?php echo $error; ?></p>
-            <?php }
-        ?>
         <form action="./elements/access.php" method="post">
             <input type="text" name="username" id="username" placeholder="Identifiant" required>
             <input type="password" name="password" id="password" placeholder="Mot de passe" required>
@@ -56,6 +50,7 @@
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
+    var previouspenalties = 0;
     function countdown() {
         var penalties = 0;
         $.ajax({
@@ -65,6 +60,13 @@
                 penalties = data;
             }
         });
+
+        if(penalties > previouspenalties) {
+            document.body.style.backgroundColor = "rgba(198, 77, 77, 0.67)";
+        } else {
+            document.body.style.backgroundColor = "rgba(131, 131, 131, 0.671)";
+        }
+
         var countDownDate = new Date(Date.parse('<?php echo $_SESSION['date']; ?>')).getTime();
         var now = new Date().getTime();
         var timeRemaining = (countDownDate - (penalties * 1000)) - now;
@@ -72,10 +74,19 @@
         var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
+        if(seconds < 10) {
+            seconds = `0${seconds}`
+        }
+
         if(timeRemaining > 0) {
             document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
         } else {
-            document.getElementsByClassName("countdown")[0].innerText = "Time's up!";
+            document.getElementsByClassName("countdown")[0].innerText = "Le temps est écoulé !";
+            document.body.style.backgroundColor = "rgba(198, 77, 77, 0.67)";
+            document.getElementById('username').disabled = true;
+            document.getElementById('password').disabled = true;
+            document.getElementById('team-name').disabled = true;
+            document.getElementById('connecter').disabled = true;
         }
 
         if(penalties >= 1) {
@@ -85,6 +96,8 @@
             document.getElementsByClassName("penalties")[0].innerText = `${penalties} seconde de pénalité`;
             document.getElementsByClassName("penalties")[0].style.color = "lime";
         }
+
+        previouspenalties = penalties;
     }
 
     setInterval(countdown, 1000);

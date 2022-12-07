@@ -50,6 +50,7 @@
                 </a>
             </div>
             <div class="card" style="background-image: url('./assets/iut.png');">
+                <!-- Pour plus de sécurité, les codes sont encryptés au moyen de 2^4 symboles. -->
                 <a href="./error.php">
                     <p class="card-category">Recherche</p>
                     <!-- Login : 69757463686572636865757273 -->
