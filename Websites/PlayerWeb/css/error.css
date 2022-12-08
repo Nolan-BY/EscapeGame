@@ -34,9 +34,3 @@ body {
     font-weight: 900;
     justify-content: center;
 }
-
-footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-}

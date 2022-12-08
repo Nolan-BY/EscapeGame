@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg" href="./assets/logo.svg">
+    <link rel="icon" type="image/svg" href="./assets/favicon.svg">
     <link rel="stylesheet" href="./css/main.css"/>
+    <link rel="stylesheet" href="./css/decors.css"/>
+    <link rel="stylesheet" href="./css/footer.css"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
     </style>
@@ -34,14 +36,14 @@
                     <img src="../assets/alert.png" alt="" />
                     <p style="margin-top: 0;">Alerte Info</p>
                 </div>
-                <p class="alerte-info-description">Une catastrophe naturelle est sur le point de se produire !<br>Tous les scientifiques sont priés de se connecter via la page de Login !</p>
+                <p class="alerte-info-description">Une catastrophe naturelle est sur le point de se produire !<br>Tous les scientifiques sont priés de se connecter via la page de Login !<br>Les codes cachés sont disponibles !</p>
             </div>
         </div>
     </header>
     <main>
         <!-- Les logins sont souvents oubliés... -->
         <section class="quick-cards">
-            <!-- Pour éviter une catastrophe, il existe des codes de secours encryptés UNIQUEMENT utilisables par les chercheurs de l'IUT R&T ! -->
+            <!-- Pour éviter une catastrophe, il existe des codes de secours codés UNIQUEMENT utilisables par les chercheurs de l'IUT R&T ! -->
             <div class="card" id="first-card" style="background-image: url('./assets/faille.jpg');">
                 <a href="./error.php">
                     <p class="card-category">Tremblements de terre</p>
@@ -50,7 +52,7 @@
                 </a>
             </div>
             <div class="card" style="background-image: url('./assets/iut.png');">
-                <!-- Pour plus de sécurité, les codes sont encryptés au moyen de 2^4 symboles. -->
+                <!-- Pour plus de sécurité, les codes sont codés au moyen de 2^4 symboles. -->
                 <a href="./error.php">
                     <p class="card-category">Recherche</p>
                     <!-- Login : 69757463686572636865757273 -->

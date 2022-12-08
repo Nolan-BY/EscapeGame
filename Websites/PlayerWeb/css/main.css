@@ -1,5 +1,4 @@
 html {
-	scroll-behavior: smooth;
 	width: 100%;
     font-family: 'Roboto', sans-serif;
 }
@@ -11,13 +10,20 @@ body {
     box-sizing: inherit;
 }
 
+html, body {
+    overflow: auto;
+    height: 100%;
+}
+
 *, *:visited, *:hover, *:focus, *:active {
     text-decoration: none;
 }
 
 main {
+    display: contents;
     max-width: 200rem;
     width: 100%;
+    height: 100%;
     padding-left: 0;
     padding-right: 0;
     margin: auto;
@@ -125,7 +131,7 @@ header {
 .quick-cards {
     width: 100%;
     height: fit-content;
-    justify-content: center;
+    height: 44rem;
 }
 
 .card {
@@ -200,20 +206,4 @@ header {
     font-size: 2rem;
     margin-top: 9%;
     margin-left: 5%;
-}
-
-/* Footer */
-
-footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    text-align: center;
-}
-
-/* Éléments de décoration */
-
-.vertical-bar {
-    border-left: 0.2rem solid black;
-    height: 3rem;
 }
