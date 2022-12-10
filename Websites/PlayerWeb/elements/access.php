@@ -8,6 +8,7 @@
       $password = mysqli_real_escape_string($con, $_POST['password']);
 
       $_SESSION['team_name'] = $_POST['team_name'];
+      mysqli_query($con,"UPDATE gamecontrol SET team_name='".$_SESSION['team_name']."' LIMIT 1");
 		
       $result = mysqli_fetch_array(mysqli_query($con, "SELECT count(*) as cntUser FROM users WHERE username='".$username."' AND password='".$password."'"));
 

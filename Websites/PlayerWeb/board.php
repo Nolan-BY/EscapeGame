@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg" href="./assets/favicon.svg">
-    <script type="text/javascript" src="./js/cowntdown.js"></script>
     <link rel="stylesheet" href="./css/board.css"/>
     <link rel="stylesheet" href="./css/decors.css"/>
     <link rel="stylesheet" href="./css/footer.css"/>
@@ -35,8 +34,9 @@
             <br>L'Institut de Recherche Scientifique sur les Catastrophes Naturelles a mis au point un dispositif permettant de contrer cette menace !
             <br />&nbsp;<br />Seul le bon code rentré dans le champ ci-dessous pourra activer ce système et sauver l'humanité !
             <br>Plusieurs dispositifs de sécurité ont été mis en place afin de garantir que le système ne puisse pas être abusé.
-            <br />&nbsp;<br />Les directives parviennent souvent par mail...</p>
-        <form id='checkcode' onsubmit="checkcode()" method="post">
+            <br />&nbsp;<br />Les directives parviennent souvent par mail...
+        </p>
+        <form id='checkcode' action="./elements/WinOrLost.php" method="post">
             <input type="text" name="final_code" id="final_code" placeholder="Code secret" required>
             <input type="submit" id="valider" value="Valider">
         </form>
@@ -140,31 +140,24 @@
     var seconds = 0;
     var previouspenalties = 0;
     var hints = 0;
+    var updateSecInt;
 
     $.ajax({
         url:"./elements/getHints.php",
         async: false,
         success:function(data){
             hints = data;
+            document.getElementById('indices').innerText = `${hints}/6 indices`;
+            if(hints != 0) {
+                document.getElementById('indices').disabled = false;
+            }
         }
     });
 
-    document.getElementById('indices').innerText = `${hints}/6 indices`;
-
-    setInterval(updateSec, 1000);
+    updateSecInt = setInterval(updateSec, 1000);
     updateSec()
 
     function updateSec() {
-        $.ajax({
-            url:"./elements/getHints.php",
-            async: false,
-            success:function(data){
-                hints = data;
-            }
-        });
-
-        document.getElementById('indices').innerText = `${hints}/6 indices`;
-
         var penalties = 0;
         $.ajax({
             url:"./elements/penalties.php",
@@ -199,6 +192,8 @@
             document.getElementById('final_code').disabled = true;
             document.getElementById('valider').disabled = true;
             document.getElementById('indices').disabled = true;
+            clearInterval(updateSecInt);
+            window.location.replace("./elements/WinOrLost.php");
         }
 
         if(penalties >= 1) {
@@ -213,20 +208,19 @@
     }
 
     function requestHint() {
+        document.getElementById('indices').disabled = true;
         $.ajax({
             url:"./elements/setHints.php",
             async: false,
             success:function(data){
                 hints = data;
+                document.getElementById('indices').innerText = `${hints}/6 indices`;
+                if(hints == 0) {
+                    document.getElementById('indices').disabled = true;
+                } else {
+                    document.getElementById('indices').disabled = false;
+                }
             }
         });
-        if(hints == 0) {
-            document.getElementById('indices').disabled = true;
-        }
-        document.getElementById('indices').innerText = `${hints}/6 indices`;
-    }
-
-    function checkcode() {
-        return;
     }
 </script>

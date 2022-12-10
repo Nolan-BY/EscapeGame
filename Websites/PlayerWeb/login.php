@@ -1,4 +1,5 @@
 <?php
+    session_start();
     if(isset($_SESSION['user'])) {
         header("location: ./board.php");
         die();
@@ -12,7 +13,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg" href="./assets/favicon.svg">
-    <script type="text/javascript" src="./js/cowntdown.js"></script>
     <link rel="stylesheet" href="./css/login.css"/>
     <link rel="stylesheet" href="./css/decors.css"/>
     <link rel="stylesheet" href="./css/footer.css"/>
@@ -34,6 +34,7 @@
                     <div class="countdown">10</div>
                 </div>
                 <p class="penalties">- x secondes</p>
+                <button id="indices" onclick="requestHint()" type="button">6/6 indices</button>
             </div>
         </div>
     </header>
@@ -55,8 +56,22 @@
     var minutes = 0;
     var seconds = 0;
     var previouspenalties = 0;
+    var hints = 0;
+    var updateSecInt;
 
-    setInterval(updateSec, 1000);
+    $.ajax({
+        url:"./elements/getHints.php",
+        async: false,
+        success:function(data){
+            hints = data;
+            document.getElementById('indices').innerText = `${hints}/6 indices`;
+            if(hints != 0) {
+                document.getElementById('indices').disabled = false;
+            }
+        }
+    });
+
+    updateSecInt = setInterval(updateSec, 1000);
     updateSec()
 
     function updateSec() {
@@ -95,7 +110,8 @@
             document.getElementById('password').disabled = true;
             document.getElementById('team-name').disabled = true;
             document.getElementById('connecter').disabled = true;
-            window.location.replace("./elements/setLost.php");
+            clearInterval(updateSecInt);
+            window.location.replace("./elements/WinOrLost.php");
         }
 
         if(penalties >= 1) {
@@ -107,5 +123,22 @@
         }
 
         previouspenalties = penalties;
+    }
+
+    function requestHint() {
+        document.getElementById('indices').disabled = true;
+        $.ajax({
+            url:"./elements/setHints.php",
+            async: false,
+            success:function(data){
+                hints = data;
+                document.getElementById('indices').innerText = `${hints}/6 indices`;
+                if(hints == 0) {
+                    document.getElementById('indices').disabled = true;
+                } else {
+                    document.getElementById('indices').disabled = false;
+                }
+            }
+        });
     }
 </script>

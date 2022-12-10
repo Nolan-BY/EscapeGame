@@ -16,6 +16,7 @@
 
     if (isset($_SESSION["date"])) {
         unset($_SESSION["date"]);
+        mysqli_query($con,"UPDATE gamecontrol SET startdate='none' LIMIT 1");
     }
 
     if (isset($_SESSION["final_code"])) {
@@ -24,6 +25,17 @@
 
     if(isset($_SESSION['team_name'])) {
         unset($_SESSION['team_name']);
+        mysqli_query($con,"UPDATE gamecontrol SET team_name='none' LIMIT 1");
+    }
+
+    if(isset($_SESSION['result_date'])) {
+        unset($_SESSION['result_date']);
+        mysqli_query($con,"UPDATE gamecontrol SET enddate='none' LIMIT 1");
+    }
+
+    if(isset($_SESSION['result'])) {
+        unset($_SESSION['result']);
+        mysqli_query($con,"UPDATE gamecontrol SET result='none' LIMIT 1");
     }
 
     if(isset($_SESSION['user'])) {
