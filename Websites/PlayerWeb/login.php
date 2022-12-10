@@ -1,6 +1,6 @@
 <?php
-    if(isset($_SESSION['user'])){
-        header("location: ../board.php");
+    if(isset($_SESSION['user'])) {
+        header("location: ./board.php");
         die();
     }
     include('./elements/init.php');
@@ -52,8 +52,14 @@
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
+    var minutes = 0;
+    var seconds = 0;
     var previouspenalties = 0;
-    function countdown() {
+
+    setInterval(updateSec, 1000);
+    updateSec()
+
+    function updateSec() {
         var penalties = 0;
         $.ajax({
             url:"./elements/penalties.php",
@@ -73,8 +79,8 @@
         var now = new Date().getTime();
         var timeRemaining = (countDownDate - (penalties * 1000)) - now;
 
-        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+        minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
         if(seconds < 10) {
             seconds = `0${seconds}`
@@ -83,12 +89,13 @@
         if(timeRemaining > 0) {
             document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
         } else {
-            document.getElementsByClassName("countdown")[0].innerText = "Le temps est écoulé !";
+            document.getElementsByClassName("countdown")[0].innerText = "Vous avez perdu !";
             document.body.style.backgroundColor = "rgba(198, 77, 77, 0.67)";
             document.getElementById('username').disabled = true;
             document.getElementById('password').disabled = true;
             document.getElementById('team-name').disabled = true;
             document.getElementById('connecter').disabled = true;
+            window.location.replace("./elements/setLost.php");
         }
 
         if(penalties >= 1) {
@@ -101,7 +108,4 @@
 
         previouspenalties = penalties;
     }
-
-    setInterval(countdown, 1000);
-    countdown()
 </script>

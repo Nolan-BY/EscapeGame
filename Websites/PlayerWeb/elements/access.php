@@ -7,7 +7,7 @@
       $username = mysqli_real_escape_string($con, $_POST['username']);
       $password = mysqli_real_escape_string($con, $_POST['password']);
 
-      $team_name = $_POST['team_name'];
+      $_SESSION['team_name'] = $_POST['team_name'];
 		
       $result = mysqli_fetch_array(mysqli_query($con, "SELECT count(*) as cntUser FROM users WHERE username='".$username."' AND password='".$password."'"));
 

@@ -19,7 +19,7 @@ body {
 main {
     max-width: 200rem;
     width: 100%;
-    height: 100%;
+    height: max-content;
     padding-left: 0;
     padding-right: 0;
     margin: auto;
@@ -116,17 +116,31 @@ header {
     border: 0.2rem rgb(0, 0, 0, 0.4) solid;
 }
 
+/* Intro */
+
+#intro_text {
+    display: flex;
+    position: relative;
+    margin-top: 5rem;
+    justify-content: center;
+    align-items: center;
+    min-width: max-content;
+    font-weight: 500;
+    color: rgb(179, 0, 0);
+    font-size: 1.3rem;
+}
+
 /* Formulaire */
 
-form {
+#checkcode {
     display: inline-block;
     position: relative;
     height: max-content;
     width: max-content;
-    top: 20%;
+    margin-top: 5rem;
 }
 
-form input {
+#checkcode input {
     height: 2rem;
     width: 20rem;
     margin-right: 0.5rem;
@@ -137,34 +151,21 @@ form input {
     width: 10rem;
 }
 
-/* Intro */
-
-#intro_text {
-    display: flex;
-    position: relative;
-    top: 10%;
-    justify-content: center;
-    align-items: center;
-    min-width: max-content;
-    font-weight: 500;
-    color: rgb(179, 0, 0);
-    font-size: 1.3rem;
-}
-
 /* Mails */
 
 #mails {
     display: block;
     position: relative;
     min-height: max-content;
-    top: 35%;
+    margin-top: 5rem;
 }
 
 .mail {
     display: inline-block;
     position: relative;
     min-height: max-content;
-    border: 0.2rem rgb(0, 0, 0) solid;
+    border-top: 0.2rem rgb(0, 0, 0) solid;
+    width: 100%;
 }
 
 .mail_header {
@@ -172,6 +173,10 @@ form input {
     position: relative;
     min-height: max-content;
     justify-content: left;
+    border-bottom: black solid 0.2rem;
+    width: max-content;
+    margin-left: 1rem;
+    text-align: left;
 }
 
 .mail_corps {
@@ -179,4 +184,6 @@ form input {
     position: relative;
     min-height: max-content;
     justify-content: left;
+    text-align: left;
+    margin: 0 2rem 0 2rem;
 }
