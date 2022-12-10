@@ -90,7 +90,7 @@
             document.body.style.backgroundColor = "rgba(131, 131, 131, 0.671)";
         }
 
-        var countDownDate = new Date(Date.parse('<?php echo $_SESSION['date']; ?>')).getTime();
+        var countDownDate = new Date(Date.parse('<?php echo $_SESSION['finishdate']; ?>')).getTime();
         var now = new Date().getTime();
         var timeRemaining = (countDownDate - (penalties * 1000)) - now;
 

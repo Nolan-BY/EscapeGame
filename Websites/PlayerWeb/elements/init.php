@@ -12,10 +12,10 @@
         $_SESSION['hints'] = $hints['hints'];
     }
 
-    if (!isset($_SESSION['date'])) {
+    if (!isset($_SESSION['finishdate'])) {
         date_default_timezone_set('Europe/Paris');
-        $_SESSION['date'] = date("r", strtotime("+600 sec"));
-        mysqli_query($con,"UPDATE gamecontrol SET startdate='".$_SESSION['date']."' LIMIT 1");
+        $_SESSION['finishdate'] = date("r", strtotime("+600 sec"));
+        mysqli_query($con,"UPDATE gamecontrol SET finishdate='".$_SESSION['finishdate']."' LIMIT 1");
     }
 
     if (!isset($_SESSION['final_code'])) {

@@ -95,7 +95,7 @@
         }
     });
 
-    var start = new Date(Date.parse('<?php echo $_SESSION['date']; ?>')).getTime();
+    var start = new Date(Date.parse('<?php echo $_SESSION['finishdate']; ?>')).getTime();
     var end = new Date(Date.parse('<?php echo $_SESSION['result_date']; ?>')).getTime();
     var timeRemaining = (start - (penalties * 1000)) - end;
     var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));

@@ -46,7 +46,7 @@
                 <div class="mail_header">
                     <p><b>Titre :</b> Catastrophe naturelle ! <b>[URGENT]</b>
                     <br><b>Exp. :</b> laetitia-rocher@irscn.fr (Responsable du pôle détection)&emsp;&emsp;<b>Dest. :</b> Équipe <?php echo $_SESSION['team_name']; ?>
-                    <br><b>Date :</b> <?php echo date('d/m/Y H:i', strtotime($_SESSION['date']));?></p>
+                    <br><b>Date :</b> <?php echo date('d/m/Y H:i', strtotime($_SESSION['finishdate']));?></p>
                 </div>
                 <div class="mail_corps">
                     <p>ATTENTION !
@@ -173,7 +173,7 @@
             document.body.style.backgroundColor = "rgba(131, 131, 131, 0.671)";
         }
 
-        var countDownDate = new Date(Date.parse('<?php echo $_SESSION['date']; ?>')).getTime();
+        var countDownDate = new Date(Date.parse('<?php echo $_SESSION['finishdate']; ?>')).getTime();
         var now = new Date().getTime();
         var timeRemaining = (countDownDate - (penalties * 1000)) - now;
 

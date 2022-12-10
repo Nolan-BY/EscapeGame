@@ -14,9 +14,9 @@
         mysqli_query($con,"UPDATE gamecontrol SET hints='6' LIMIT 1");
     }
 
-    if (isset($_SESSION["date"])) {
-        unset($_SESSION["date"]);
-        mysqli_query($con,"UPDATE gamecontrol SET startdate='none' LIMIT 1");
+    if (isset($_SESSION["finishdate"])) {
+        unset($_SESSION["finishdate"]);
+        mysqli_query($con,"UPDATE gamecontrol SET finishdate='none' LIMIT 1");
     }
 
     if (isset($_SESSION["final_code"])) {
