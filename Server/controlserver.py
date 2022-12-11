@@ -7,8 +7,10 @@ import socket, sys, shutil, os
 class ServeurTCP():
     def __init__(self):
         self.serveur = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.arduino = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.serveur.bind(('', 9999))
+            self.arduino.connect(("192.168.59.85",9990))
         except socket.error:
             print("La connexion du socket a échoué !")
             sys.exit()
@@ -21,9 +23,9 @@ class ServeurTCP():
             connexion, adresse = self.serveur.accept()
             print("Client connecté. Adresse : " + adresse[0])
             while True:
-                requete = connexion.recv(1024)
-                print("\nMessage>", requete.decode("utf-8"))
-            connexion.send("Connexion fermée ! Au revoir".encode("utf-8"))
+                message = connexion.recv(1024).decode("utf-8")
+                print("\nMessage>", message)
+                self.arduino.send(message.encode())
             print("Connexion interrompue.")
             connexion.close()
 

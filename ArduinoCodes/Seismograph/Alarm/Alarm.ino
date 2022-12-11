@@ -44,6 +44,7 @@ void setup() {
   Serial.println("Open Server ");
   sendATcmd("AT+CIPMUX=1", 2, "OK");
   sendATcmd("AT+CIPSERVER=1,4444", 2, "OK");
+  Serial.println("AT+CIFSR:STAIP");
 }
 
 void loop() {

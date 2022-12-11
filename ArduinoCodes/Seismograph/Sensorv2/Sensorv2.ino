@@ -13,10 +13,6 @@ SerialESP8266wifi wifi(swSerial, swSerial, esp8266_reset_pin, Serial);//adding S
 // TODO: change user config
 #define ssid "ArduinoEarth" //Wifi SSID
 #define password "chevre007" //Wifi Password
-const unsigned int writeInterval = 25000; // write interval (in ms)
-
-#define RECEIVER wifi.connectToServer("192.168.0.28", "2121")
-#define SERVER wifi.connectToServer("192.168.59.54", "2121")
 
 String inputString;
 boolean stringComplete = false;
@@ -47,6 +43,8 @@ void setup() {
   wifi.begin();
 
   wifi.connectToAP(ssid, password);
+
+  wifi.connectToServer("192.168.59.54", "9999");
 }
 
 void loop() {
@@ -71,9 +69,7 @@ void loop() {
       if (alerte_confirm == 5) {
         Serial.println("TREMBLEMENT DE TERRE !");
         alerte = true;
-        // wifi.send(RECEIVER, "true");
-        // wifi.send(SERVER, "true");
-        delay(2000);
+        wifi.send(SERVER, "true");
       }
       Serial.println(alerte_confirm);
     }
@@ -99,8 +95,7 @@ void loop() {
 
   if (alerte == true) {
     alerte = false;
-    // wifi.send(RECEIVER, "false");
-    delay(2000);
+    wifi.send(SERVER, "false");
   }
   Serial.println("RAS");
   delay(500);
