@@ -1,62 +1,73 @@
 int y = 0;
 String reponse = "";
 
+const int GREEN = 3;
+const int BLUE = 4;
+const int YELLOW = 5;
+const int RED = 6;
+const int GREEN_BTN = 7;
+const int BLUE_BTN = 8;
+const int YELLOW_BTN = 9;
+const int RED_BTN = 10;
+const int BUZZER = 2;
+const int RESET = 13;
+
 void setup() {
   Serial.begin(9600);
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, INPUT_PULLUP);
-  pinMode(7, INPUT_PULLUP);
-  pinMode(8, INPUT_PULLUP);
-  pinMode(9, INPUT_PULLUP);
-  pinMode(10, OUTPUT);
-  pinMode(13, INPUT_PULLUP);
+  pinMode(GREEN, OUTPUT);
+  pinMode(BLUE, OUTPUT);
+  pinMode(YELLOW, OUTPUT);
+  pinMode(RED, OUTPUT);
+  pinMode(GREEN_BTN, INPUT_PULLUP);
+  pinMode(BLUE_BTN, INPUT_PULLUP);
+  pinMode(YELLOW_BTN, INPUT_PULLUP);
+  pinMode(RED_BTN, INPUT_PULLUP);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(RESET, INPUT_PULLUP);
 }
 
 
 void play_note(int notes, int notespeed) {
-  digitalWrite(10, LOW);
-  tone(10, notes, notespeed);
+  digitalWrite(BUZZER, LOW);
+  tone(BUZZER, notes, notespeed);
   delay(notespeed * 2);
-  digitalWrite(10, HIGH);
+  digitalWrite(BUZZER, HIGH);
 }
 
 
 void bouton(){
-  if (digitalRead(6) == LOW) {
+  if (digitalRead(GREEN_BTN) == LOW) {
     reponse += 2;
-    digitalWrite(2, HIGH);
+    digitalWrite(GREEN, HIGH);
     delay(100);
-    digitalWrite(2, LOW);
+    digitalWrite(GREEN, LOW);
     Serial.println(reponse);
     delay(1000);
   }
 
-  else if (digitalRead(7) == LOW) {
+  else if (digitalRead(BLUE_BTN) == LOW) {
     reponse += 3;
-    digitalWrite(3, HIGH);
+    digitalWrite(BLUE, HIGH);
     delay(100);
-    digitalWrite(3, LOW);
+    digitalWrite(BLUE, LOW);
     Serial.println(reponse);
     delay(1000);
   }
     
-  else if (digitalRead(8) == LOW) {
+  else if (digitalRead(YELLOW_BTN) == LOW) {
     reponse += 4;
-    digitalWrite(4, HIGH);
+    digitalWrite(YELLOW, HIGH);
     delay(100);
-    digitalWrite(4, LOW);
+    digitalWrite(YELLOW, LOW);
     Serial.println(reponse);
     delay(1000);
   }
     
-  else if (digitalRead(9) == LOW) {
+  else if (digitalRead(RED_BTN) == LOW) {
     reponse += 5;
-    digitalWrite(5, HIGH);
+    digitalWrite(RED, HIGH);
     delay(100);
-    digitalWrite(5, LOW);
+    digitalWrite(RED, LOW);
     Serial.println(reponse);
     delay(1000);
   }
@@ -64,40 +75,40 @@ void bouton(){
 
 
 void animation(){
-  digitalWrite(2, HIGH); 
+  digitalWrite(GREEN, HIGH); 
   delay(50);
-  digitalWrite(2, LOW);
+  digitalWrite(GREEN, LOW);
   play_note(100, 10); 
-  digitalWrite(3, HIGH); 
+  digitalWrite(BLUE, HIGH); 
   delay(50);
-  digitalWrite(3, LOW);
+  digitalWrite(BLUE, LOW);
   play_note(200, 10);
-  digitalWrite(4, HIGH);
+  digitalWrite(YELLOW, HIGH);
   delay(50);
-  digitalWrite(4, LOW);
+  digitalWrite(YELLOW, LOW);
   play_note(400, 10);
-  digitalWrite(5, HIGH); 
+  digitalWrite(RED, HIGH); 
   delay(50);
-  digitalWrite(5, LOW);
+  digitalWrite(RED, LOW);
   play_note(800, 10);
   delay(100);
 
-  digitalWrite(2, HIGH);
-  digitalWrite(3, HIGH);
-  digitalWrite(4, HIGH);
-  digitalWrite(5, HIGH);
+  digitalWrite(GREEN, HIGH);
+  digitalWrite(BLUE, HIGH);
+  digitalWrite(YELLOW, HIGH);
+  digitalWrite(RED, HIGH);
   play_note(1000, 10);
   delay(1000);
 
-  digitalWrite(2, LOW);
-  digitalWrite(3, LOW);
-  digitalWrite(4, LOW);
-  digitalWrite(5, LOW);
+  digitalWrite(GREEN, LOW);
+  digitalWrite(BLUE, LOW);
+  digitalWrite(YELLOW, LOW);
+  digitalWrite(RED, LOW);
 }
 
 
 void loop() {
-  if (digitalRead(13) == LOW) {
+  if (digitalRead(RESET) == LOW) {
     Serial.println("OKAY !");
     jeu();
   }
@@ -107,56 +118,59 @@ void loop() {
 
 void jeu() {
   // Initialisation du jeu
-  while (1==1) {
+  while (1 == 1) {
     if (y == 0) {
       for (int i=0; i<8; i++) {
-        digitalWrite(2, HIGH); 
+        digitalWrite(GREEN, HIGH); 
         delay(75);
-        digitalWrite(2, LOW);
+        digitalWrite(GREEN, LOW);
         play_note(100, 10); 
-        digitalWrite(3, HIGH); 
+        digitalWrite(BLUE, HIGH); 
         delay(75);
-        digitalWrite(3, LOW);
+        digitalWrite(BLUE, LOW);
         play_note(200, 10);
-        digitalWrite(4, HIGH);
+        digitalWrite(YELLOW, HIGH);
         delay(75);
-        digitalWrite(4, LOW);
+        digitalWrite(YELLOW, LOW);
         play_note(400, 10);
-        digitalWrite(5, HIGH); 
+        digitalWrite(RED, HIGH); 
         delay(75);
-        digitalWrite(5, LOW);
+        digitalWrite(RED, LOW);
         play_note(800, 10);
       }
       y = 1;
 
       String code = "342";
       delay(1000);
-      digitalWrite(3, HIGH);
-      play_note(200, 10);
+      digitalWrite(BLUE, HIGH);
+      play_note(200, 20);
       delay(500);
-      digitalWrite(3, LOW);
-      digitalWrite(4, HIGH);
-      play_note(400, 10);
+      digitalWrite(BLUE, LOW);
+      digitalWrite(YELLOW, HIGH);
+      play_note(400, 20);
       delay(500);
-      digitalWrite(4, LOW);
-      digitalWrite(2, HIGH);
-      play_note(100, 10);
+      digitalWrite(YELLOW, LOW);
+      digitalWrite(GREEN, HIGH);
+      play_note(100, 20);
       delay(500);
-      digitalWrite(2, LOW);
+      digitalWrite(GREEN, LOW);
 
-      while(reponse.length() != code.length()){
+      while(reponse.length() != code.length()) {
         bouton();
       }
 
-      if(reponse == code){
+      if(reponse == code) {
         animation();
+        reponse = "";
       }
 
-      else{
-        digitalWrite(5, HIGH);
+      else {
+        digitalWrite(RED, HIGH);
         delay(100);
-        digitalWrite(5, LOW);
+        digitalWrite(RED, LOW);
         play_note(800, 10);
+        y = 0;
+        reponse = "";
         break;
       }
     }
