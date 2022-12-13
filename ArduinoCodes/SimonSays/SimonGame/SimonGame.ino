@@ -12,6 +12,8 @@ const int RED_BTN = 10;
 const int BUZZER = 2;
 const int RESET = 13;
 
+#define lenarr(array) ((sizeof(array)) / (sizeof(array[0])))
+
 void setup() {
   Serial.begin(9600);
   pinMode(GREEN, OUTPUT);
@@ -35,9 +37,9 @@ void play_note(int notes, int notespeed) {
 }
 
 
-void bouton(){
+void bouton() {
   if (digitalRead(GREEN_BTN) == LOW) {
-    reponse += 2;
+    reponse += 3;
     digitalWrite(GREEN, HIGH);
     delay(100);
     digitalWrite(GREEN, LOW);
@@ -46,7 +48,7 @@ void bouton(){
   }
 
   else if (digitalRead(BLUE_BTN) == LOW) {
-    reponse += 3;
+    reponse += 4;
     digitalWrite(BLUE, HIGH);
     delay(100);
     digitalWrite(BLUE, LOW);
@@ -55,7 +57,7 @@ void bouton(){
   }
     
   else if (digitalRead(YELLOW_BTN) == LOW) {
-    reponse += 4;
+    reponse += 5;
     digitalWrite(YELLOW, HIGH);
     delay(100);
     digitalWrite(YELLOW, LOW);
@@ -64,7 +66,7 @@ void bouton(){
   }
     
   else if (digitalRead(RED_BTN) == LOW) {
-    reponse += 5;
+    reponse += 6;
     digitalWrite(RED, HIGH);
     delay(100);
     digitalWrite(RED, LOW);
@@ -74,7 +76,7 @@ void bouton(){
 }
 
 
-void animation(){
+void animationSuccess() {
   digitalWrite(GREEN, HIGH); 
   delay(50);
   digitalWrite(GREEN, LOW);
@@ -86,11 +88,11 @@ void animation(){
   digitalWrite(YELLOW, HIGH);
   delay(50);
   digitalWrite(YELLOW, LOW);
-  play_note(400, 10);
+  play_note(300, 10);
   digitalWrite(RED, HIGH); 
   delay(50);
   digitalWrite(RED, LOW);
-  play_note(800, 10);
+  play_note(400, 10);
   delay(100);
 
   digitalWrite(GREEN, HIGH);
@@ -104,6 +106,42 @@ void animation(){
   digitalWrite(BLUE, LOW);
   digitalWrite(YELLOW, LOW);
   digitalWrite(RED, LOW);
+}
+
+
+void code(String code) {
+  const char* leds[] = {"GREEN", "BLUE", "YELLOW", "RED"};
+  int buzz[] = {100, 200, 300, 400};
+
+  int code_len = code.length() + 1; 
+  char char_array[code_len];
+  code.toCharArray(char_array, code_len);
+
+  for(int c = 0; c < code.length(); c++) {
+    digitalWrite(leds[c-2], HIGH);
+    play_note(buzz[c-2], 20);
+    delay(500);
+    digitalWrite(leds[c-2], LOW);
+  }
+
+  while(reponse.length() != code.length()) {
+    bouton();
+  }
+
+  if(reponse == code) {
+    animationSuccess();
+    reponse = "";
+  }
+
+  else {
+    digitalWrite(RED, HIGH);
+    delay(100);
+    digitalWrite(RED, LOW);
+    play_note(800, 10);
+    y = 0;
+    reponse = "";
+    return;
+  }
 }
 
 
@@ -140,38 +178,10 @@ void jeu() {
       }
       y = 1;
 
-      String code = "342";
-      delay(1000);
-      digitalWrite(BLUE, HIGH);
-      play_note(200, 20);
-      delay(500);
-      digitalWrite(BLUE, LOW);
-      digitalWrite(YELLOW, HIGH);
-      play_note(400, 20);
-      delay(500);
-      digitalWrite(YELLOW, LOW);
-      digitalWrite(GREEN, HIGH);
-      play_note(100, 20);
-      delay(500);
-      digitalWrite(GREEN, LOW);
-
-      while(reponse.length() != code.length()) {
-        bouton();
-      }
-
-      if(reponse == code) {
-        animation();
-        reponse = "";
-      }
-
-      else {
-        digitalWrite(RED, HIGH);
-        delay(100);
-        digitalWrite(RED, LOW);
-        play_note(800, 10);
-        y = 0;
-        reponse = "";
-        break;
+      const char* codes[] = {"453", "44445", "5435", "3"};
+      for(int cds = 0; cds < lenarr(codes); cds++) {
+        delay(1000);
+        code(codes[cds]);
       }
     }
   }
