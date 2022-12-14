@@ -12,6 +12,8 @@ const int RED_BTN = 10;
 const int BUZZER = 2;
 const int RESET = 13;
 
+const char* codes[] = {"4,5,3", "4,5,3,6,5,4,5", "4,5,3,6,5,4,5,6,3,4,6", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4,5,3,6,5"};
+
 void setup() {
   Serial.begin(9600);
   pinMode(GREEN, OUTPUT);
@@ -27,15 +29,15 @@ void setup() {
 }
 
 
-void play_note(int notes, int notespeed) {
+void play_note(int note, int notespeed) {
   digitalWrite(BUZZER, LOW);
-  tone(BUZZER, notes, notespeed);
+  tone(BUZZER, note, notespeed);
   delay(notespeed * 2);
   digitalWrite(BUZZER, HIGH);
 }
 
 
-void bouton() {
+void boutons() {
   if (digitalRead(GREEN_BTN) == LOW) {
     reponse += 3;
     digitalWrite(GREEN, HIGH);
@@ -78,26 +80,26 @@ void animationSuccess() {
   digitalWrite(GREEN, HIGH); 
   delay(50);
   digitalWrite(GREEN, LOW);
-  play_note(100, 10); 
+  play_note(100, 50); 
   digitalWrite(BLUE, HIGH); 
   delay(50);
   digitalWrite(BLUE, LOW);
-  play_note(200, 10);
+  play_note(200, 50);
   digitalWrite(YELLOW, HIGH);
   delay(50);
   digitalWrite(YELLOW, LOW);
-  play_note(300, 10);
+  play_note(300, 50);
   digitalWrite(RED, HIGH); 
   delay(50);
   digitalWrite(RED, LOW);
-  play_note(400, 10);
+  play_note(400, 50);
   delay(100);
 
   digitalWrite(GREEN, HIGH);
   digitalWrite(BLUE, HIGH);
   digitalWrite(YELLOW, HIGH);
   digitalWrite(RED, HIGH);
-  play_note(1000, 10);
+  play_note(1000, 50);
   delay(1000);
 
   digitalWrite(GREEN, LOW);
@@ -107,26 +109,28 @@ void animationSuccess() {
 }
 
 
-void doCode(char* code) {
+void doCode(char* code_source) {
+
+  char code[sizeof(code_source)];
+
+  strcpy(code, code_source);
 
   String codeTest(code);
   codeTest.replace(",","");
-  int buzz[] = {100, 200, 300, 400};
-
-  Serial.println(codeTest.length());
+  int buzz[] = {300, 350, 400, 450};
 
   char* codeArr = strtok(code, ",");
 
   while (codeArr != NULL) {
     digitalWrite(atoi(codeArr), HIGH);
-    play_note(buzz[atoi(codeArr)], 20);
+    play_note(buzz[atoi(codeArr)-3], 50);
     delay(500);
     digitalWrite(atoi(codeArr), LOW);
     codeArr = strtok(NULL, ",");
   }
 
   while(reponse.length() != codeTest.length()) {
-    bouton();
+    boutons();
   }
 
   if(reponse == codeTest) {
@@ -137,7 +141,7 @@ void doCode(char* code) {
     digitalWrite(RED, HIGH);
     delay(100);
     digitalWrite(RED, LOW);
-    play_note(800, 10);
+    play_note(800, 50);
     y = 0;
   }
 }
@@ -148,7 +152,7 @@ void win() {
   digitalWrite(BLUE, HIGH);
   digitalWrite(YELLOW, HIGH);
   digitalWrite(RED, HIGH);
-  play_note(1000, 25);
+  play_note(1000, 50);
   digitalWrite(GREEN, LOW);
   digitalWrite(BLUE, LOW);
   digitalWrite(YELLOW, LOW);
@@ -158,7 +162,7 @@ void win() {
   digitalWrite(BLUE, HIGH);
   digitalWrite(YELLOW, HIGH);
   digitalWrite(RED, HIGH);
-  play_note(1000, 25);
+  play_note(1000, 50);
   digitalWrite(GREEN, LOW);
   digitalWrite(BLUE, LOW);
   digitalWrite(YELLOW, LOW);
@@ -182,23 +186,22 @@ void jeu() {
       digitalWrite(GREEN, HIGH); 
       delay(75);
       digitalWrite(GREEN, LOW);
-      play_note(100, 10); 
+      play_note(100, 50); 
       digitalWrite(BLUE, HIGH); 
       delay(75);
       digitalWrite(BLUE, LOW);
-      play_note(200, 10);
+      play_note(200, 50);
       digitalWrite(YELLOW, HIGH);
       delay(75);
       digitalWrite(YELLOW, LOW);
-      play_note(400, 10);
+      play_note(400, 50);
       digitalWrite(RED, HIGH); 
       delay(75);
       digitalWrite(RED, LOW);
-      play_note(800, 10);
+      play_note(800, 50);
     }
     y = 1;
 
-    const char* codes[] = {"4,5,3", "4,5,3,6,5,4,5", "4,5,3,6,5,4,5,6,3,4,6", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4,5,3,6,5"};
     for(int cds = 0; cds < 5; cds++) {
       delay(1000);
       Serial.println(codes[cds]);
