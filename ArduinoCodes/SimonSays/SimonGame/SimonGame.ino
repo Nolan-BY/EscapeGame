@@ -12,8 +12,6 @@ const int RED_BTN = 10;
 const int BUZZER = 2;
 const int RESET = 13;
 
-#define lenarr(array) ((sizeof(array)) / (sizeof(array[0])))
-
 void setup() {
   Serial.begin(9600);
   pinMode(GREEN, OUTPUT);
@@ -109,44 +107,67 @@ void animationSuccess() {
 }
 
 
-void code(String code) {
-  const char* leds[] = {"GREEN", "BLUE", "YELLOW", "RED"};
+void doCode(char* code) {
+
+  String codeTest(code);
+  codeTest.replace(",","");
   int buzz[] = {100, 200, 300, 400};
 
-  int code_len = code.length() + 1; 
-  char char_array[code_len];
-  code.toCharArray(char_array, code_len);
+  Serial.println(codeTest.length());
 
-  for(int c = 0; c < code.length(); c++) {
-    digitalWrite(leds[c-2], HIGH);
-    play_note(buzz[c-2], 20);
+  char* codeArr = strtok(code, ",");
+
+  while (codeArr != NULL) {
+    digitalWrite(atoi(codeArr), HIGH);
+    play_note(buzz[atoi(codeArr)], 20);
     delay(500);
-    digitalWrite(leds[c-2], LOW);
+    digitalWrite(atoi(codeArr), LOW);
+    codeArr = strtok(NULL, ",");
   }
 
-  while(reponse.length() != code.length()) {
+  while(reponse.length() != codeTest.length()) {
     bouton();
   }
 
-  if(reponse == code) {
+  if(reponse == codeTest) {
     animationSuccess();
-    reponse = "";
   }
 
-  else {
+  else if(reponse != codeTest){
     digitalWrite(RED, HIGH);
     delay(100);
     digitalWrite(RED, LOW);
     play_note(800, 10);
     y = 0;
-    reponse = "";
-    return;
   }
 }
 
 
+void win() {
+  digitalWrite(GREEN, HIGH);
+  digitalWrite(BLUE, HIGH);
+  digitalWrite(YELLOW, HIGH);
+  digitalWrite(RED, HIGH);
+  play_note(1000, 25);
+  digitalWrite(GREEN, LOW);
+  digitalWrite(BLUE, LOW);
+  digitalWrite(YELLOW, LOW);
+  digitalWrite(RED, LOW);
+  delay(500);
+  digitalWrite(GREEN, HIGH);
+  digitalWrite(BLUE, HIGH);
+  digitalWrite(YELLOW, HIGH);
+  digitalWrite(RED, HIGH);
+  play_note(1000, 25);
+  digitalWrite(GREEN, LOW);
+  digitalWrite(BLUE, LOW);
+  digitalWrite(YELLOW, LOW);
+  digitalWrite(RED, LOW);
+}
+
+
 void loop() {
-  if (digitalRead(RESET) == LOW) {
+  if ((digitalRead(RESET) == LOW) && (y == 0)) {
     Serial.println("OKAY !");
     jeu();
   }
@@ -156,33 +177,40 @@ void loop() {
 
 void jeu() {
   // Initialisation du jeu
-  while (1 == 1) {
-    if (y == 0) {
-      for (int i=0; i<8; i++) {
-        digitalWrite(GREEN, HIGH); 
-        delay(75);
-        digitalWrite(GREEN, LOW);
-        play_note(100, 10); 
-        digitalWrite(BLUE, HIGH); 
-        delay(75);
-        digitalWrite(BLUE, LOW);
-        play_note(200, 10);
-        digitalWrite(YELLOW, HIGH);
-        delay(75);
-        digitalWrite(YELLOW, LOW);
-        play_note(400, 10);
-        digitalWrite(RED, HIGH); 
-        delay(75);
-        digitalWrite(RED, LOW);
-        play_note(800, 10);
-      }
-      y = 1;
+  if (y == 0) {
+    for (int i=0; i<8; i++) {
+      digitalWrite(GREEN, HIGH); 
+      delay(75);
+      digitalWrite(GREEN, LOW);
+      play_note(100, 10); 
+      digitalWrite(BLUE, HIGH); 
+      delay(75);
+      digitalWrite(BLUE, LOW);
+      play_note(200, 10);
+      digitalWrite(YELLOW, HIGH);
+      delay(75);
+      digitalWrite(YELLOW, LOW);
+      play_note(400, 10);
+      digitalWrite(RED, HIGH); 
+      delay(75);
+      digitalWrite(RED, LOW);
+      play_note(800, 10);
+    }
+    y = 1;
 
-      const char* codes[] = {"453", "44445", "5435", "3"};
-      for(int cds = 0; cds < lenarr(codes); cds++) {
-        delay(1000);
-        code(codes[cds]);
+    const char* codes[] = {"4,5,3", "4,5,3,6,5,4,5", "4,5,3,6,5,4,5,6,3,4,6", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4,5,3,6,5"};
+    for(int cds = 0; cds < 5; cds++) {
+      delay(1000);
+      Serial.println(codes[cds]);
+      doCode(codes[cds]);
+      reponse = "";
+      if(y == 0) {
+        break;
       }
+    }
+    if(y != 0) {
+      y = 0;
+      win();
     }
   }
 }
