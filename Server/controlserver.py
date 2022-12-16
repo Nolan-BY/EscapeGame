@@ -1,8 +1,8 @@
 """
-Serveur de control des arduinos de l'escape game
+Serveur de contrôle des arduinos de l'escape game
 """
 
-import socket, sys, shutil, os
+import socket, sys
 
 class ServeurTCP():
     def __init__(self):
