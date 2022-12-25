@@ -41,11 +41,11 @@ void setup() {
 }
 
 
-void play_note(char code) {
+void play_note(char code, int del) {
   for (int i = 0; i<4; i++) {
     if (notes[i].code == code) {
-      tone(BUZZER, notes[i].frequency, 50);
-      delay(100);
+      tone(BUZZER, notes[i].frequency, del);
+      delay(del*2);
       noTone(BUZZER);
       break;
     }
@@ -56,9 +56,8 @@ void play_note(char code) {
 void boutons() {
   if (digitalRead(GREEN_BTN) == LOW) {
     reponse += 3;
-    play_note('3');
     digitalWrite(GREEN, HIGH);
-    delay(100);
+    play_note('3', 50);
     digitalWrite(GREEN, LOW);
     Serial.println(reponse);
     startTime = millis();
@@ -67,9 +66,8 @@ void boutons() {
 
   else if (digitalRead(BLUE_BTN) == LOW) {
     reponse += 4;
-    play_note('4');
     digitalWrite(BLUE, HIGH);
-    delay(100);
+    play_note('4', 50);
     digitalWrite(BLUE, LOW);
     Serial.println(reponse);
     startTime = millis();
@@ -78,9 +76,8 @@ void boutons() {
     
   else if (digitalRead(YELLOW_BTN) == LOW) {
     reponse += 5;
-    play_note('5');
     digitalWrite(YELLOW, HIGH);
-    delay(100);
+    play_note('5', 50);
     digitalWrite(YELLOW, LOW);
     Serial.println(reponse);
     startTime = millis();
@@ -89,9 +86,8 @@ void boutons() {
     
   else if (digitalRead(RED_BTN) == LOW) {
     reponse += 6;
-    play_note('6');
     digitalWrite(RED, HIGH);
-    delay(100);
+    play_note('6', 50);
     digitalWrite(RED, LOW);
     Serial.println(reponse);
     startTime = millis();
@@ -102,16 +98,16 @@ void boutons() {
 
 void animationSuccess() {
   digitalWrite(GREEN, HIGH); 
-  play_note('3'); 
+  play_note('3', 40); 
   digitalWrite(GREEN, LOW);
   digitalWrite(BLUE, HIGH); 
-  play_note('4');
+  play_note('4', 40);
   digitalWrite(BLUE, LOW);
   digitalWrite(YELLOW, HIGH);
-  play_note('5');
+  play_note('5', 40);
   digitalWrite(YELLOW, LOW);
   digitalWrite(RED, HIGH); 
-  play_note('6');
+  play_note('6', 40);
   digitalWrite(RED, LOW);
   delay(100);
 
@@ -119,7 +115,7 @@ void animationSuccess() {
   digitalWrite(BLUE, HIGH);
   digitalWrite(YELLOW, HIGH);
   digitalWrite(RED, HIGH);
-  tone(BUZZER, 450, 100);
+  tone(BUZZER, 500, 100);
   delay(200);
   noTone(BUZZER);
   digitalWrite(GREEN, LOW);
@@ -138,8 +134,6 @@ void doCode(char* code_source) {
 
   char* codeArr = strtok(code, ",");
 
-  startTime = millis();
-
   while (codeArr != NULL) {
     for (int i = 0; i<4; i++) {
       if (notes[i].code == *codeArr) {
@@ -155,6 +149,7 @@ void doCode(char* code_source) {
 
   free(code);
   reponse = "";
+  startTime = millis();
 
   while (reponse.length() != codeTest.length()) {
     boutons();
@@ -210,23 +205,23 @@ void loop() {
 void jeu() {
   // Initialisation du jeu
   if (y == 0) {
-    for (int i=0; i<8; i++) {
+    for (int i=0; i<6; i++) {
       digitalWrite(GREEN, HIGH); 
       delay(75);
       digitalWrite(GREEN, LOW);
-      play_note('3'); 
+      play_note('3', 40); 
       digitalWrite(BLUE, HIGH); 
       delay(75);
       digitalWrite(BLUE, LOW);
-      play_note('4');
+      play_note('4', 40);
       digitalWrite(YELLOW, HIGH);
       delay(75);
       digitalWrite(YELLOW, LOW);
-      play_note('5');
+      play_note('5', 40);
       digitalWrite(RED, HIGH); 
       delay(75);
       digitalWrite(RED, LOW);
-      play_note('6');
+      play_note('6', 40);
     }
     y = 1;
 
