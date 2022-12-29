@@ -187,7 +187,7 @@
         if(timeRemaining > 0) {
             document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
         } else {
-            document.getElementsByClassName("countdown")[0].innerText = "Vous avez perdu !";
+            document.getElementsByClassName("countdown")[0].innerText = "Le temps est écoulé !";
             document.body.style.backgroundColor = "rgba(198, 77, 77, 0.67)";
             document.getElementById('final_code').disabled = true;
             document.getElementById('valider').disabled = true;

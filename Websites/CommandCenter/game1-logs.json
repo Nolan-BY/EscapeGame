@@ -1,0 +1,41 @@
+{
+    "team_name": "FBX",
+    "logs": [
+        {
+            "id": "LR50000",
+            "enigma": "Login",
+            "date": "16:58:44",
+            "status": "Résolue",
+            "time_left": 50000,
+            "penalties": 20,
+            "hints": 2
+        },
+        {
+            "id": "SE48888",
+            "enigma": "Simon",
+            "date": "16:59:44",
+            "status": "Échouée",
+            "time_left": 48888,
+            "penalties": 30,
+            "hints": 1
+        },
+        {
+            "id": "LR45222",
+            "enigma": "Lock",
+            "date": "17:59:44",
+            "status": "Résolue",
+            "time_left": 45222,
+            "penalties": 30,
+            "hints": 1
+        },
+        {
+            "id": "AR40000",
+            "enigma": "Asterisk",
+            "date": "17:59:44",
+            "status": "Résolue",
+            "time_left": 40000,
+            "penalties": 30,
+            "hints": 1
+        }
+    ]
+}
