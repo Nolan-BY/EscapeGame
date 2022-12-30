@@ -56,6 +56,8 @@
             document.getElementById('indices').innerText = `${hints}/6 indices`;
             if(hints != 0) {
                 document.getElementById('indices').disabled = false;
+            } else {
+                document.getElementById('indices').disabled = true;
             }
         }
     });
@@ -93,7 +95,7 @@
         if(timeRemaining > 0) {
             document.getElementsByClassName("countdown")[0].innerText = `${minutes}:${seconds}`;
         } else {
-            document.getElementsByClassName("countdown")[0].innerText = "Vous avez perdu !";
+            document.getElementsByClassName("countdown")[0].innerText = "Le temps est écoulé !";
             document.body.style.backgroundColor = "rgba(198, 77, 77, 0.67)";
             clearInterval(updateSecInt);
             window.location.replace("./elements/WinOrLost.php");
@@ -118,12 +120,14 @@
             success:function(data){
                 hints = data;
                 document.getElementById('indices').innerText = `${hints}/6 indices`;
-                if(hints == 0) {
-                    document.getElementById('indices').disabled = true;
-                } else {
-                    document.getElementById('indices').disabled = false;
-                }
             }
         });
+        setTimeout(() => {
+            if(hints == 0) {
+                document.getElementById('indices').disabled = true;
+            } else {
+                document.getElementById('indices').disabled = false;
+            }
+        }, 5000);
     }
 </script>

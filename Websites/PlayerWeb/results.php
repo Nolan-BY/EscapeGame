@@ -71,10 +71,15 @@
 <script>
     var result = '<?php echo $_SESSION['result']; ?>';
 
+    // Need to retreive value from database based on enigmas success or fail
+    var result_enigmas = 0;
+
     if(result == 'win') {
         document.getElementById('result_text').style.color = 'rgb(0, 117, 6)';
+        result_enigmas += 20;
     } else if(result == 'lost') {
         document.getElementById('result_text').style.color = 'rgb(179, 0, 0)';
+        result_enigmas -= 50;
     }
 
     var penalties = 0;
@@ -101,7 +106,7 @@
     var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-    var score = Math.floor((((minutes * 60) + seconds) * 100) / 600);
+    var score = Math.floor(((((minutes * 60) + seconds) * 100) / 600) + result_enigmas);
 
     if(score < 0) {
         score = 0;

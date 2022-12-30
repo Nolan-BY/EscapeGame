@@ -150,6 +150,8 @@
             document.getElementById('indices').innerText = `${hints}/6 indices`;
             if(hints != 0) {
                 document.getElementById('indices').disabled = false;
+            } else {
+                document.getElementById('indices').disabled = true;
             }
         }
     });
@@ -215,12 +217,14 @@
             success:function(data){
                 hints = data;
                 document.getElementById('indices').innerText = `${hints}/6 indices`;
-                if(hints == 0) {
-                    document.getElementById('indices').disabled = true;
-                } else {
-                    document.getElementById('indices').disabled = false;
-                }
             }
         });
+        setTimeout(() => {
+            if(hints == 0) {
+                document.getElementById('indices').disabled = true;
+            } else {
+                document.getElementById('indices').disabled = false;
+            }
+        }, 5000);
     }
 </script>

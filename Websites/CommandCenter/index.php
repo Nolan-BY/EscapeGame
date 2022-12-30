@@ -25,11 +25,38 @@
         </div>
     </header>
     <main>
-        <p id="logs_title">Logs</p>
-        <section id="logs">
-        </section>
-        <section id="results">
-        </section>
+        <div id="timer_container">
+            <p id="timer_panel_title">Timer</p>
+            <section id="timer_panel">
+                <p id="timer"></p>
+            </section>
+        </div>
+
+        <div id="logs_container">
+            <p id="logs_title">Logs</p>
+            <section id="logs"></section>
+        </div>
+
+        <div id="hints_container">
+            <p id="hints_panel_title">Indices</p>
+            <section id="hints_panel">
+                <div id="hints_alert">
+                    <p>Un indice est demandé !</p>
+                </div>
+                <p id="hints"></p>
+            </section>
+        </div>
+
+        <div id="penalties_container">
+            <p id="penalties_panel_title">Pénalités</p>
+            <section id="penalties_panel">
+                <p id="penalties"></p>
+            </section>
+        </div>
+
+        <div id="results_container">
+            <section id="results"></section>
+        </div>
     </main>
     <footer style="position: relative;">
         <p>Copyright 2022 - Meilleur groupe du TP1</p>
@@ -43,8 +70,6 @@
     var previoushints;
     var updateSecInt;
     var logs_ids = [];
-
-    let anchor = document.getElementById("anchor");
 
     updateSecInt = setInterval(updateSec, 1000);
     updateSec()
@@ -60,18 +85,40 @@
         $.ajax({
             url:"./elements/getData.php",
             async: false,
-            success:function(data){
-                team_name = data.team_name;
-                penalties = data.penalties;
-                hints = data.hints;
-                finishdate = data.finishdate;
-                enddate = data.enddate;
-                result = data.result;
+            success:function(PHPdata){
+                let data = JSON.parse(PHPdata)
+                team_name = data[0].team_name;
+                penalties = Number(data[0].penalties);
+                hints = Number(data[0].hints);
+                finishdate = data[0].finishdate;
+                enddate = data[0].enddate;
+                result = data[0].result;
             }
         });
 
-        if (result == undefined) {
-            // document.getElementById('indices').innerText = `${hints}/6 indices`;
+        if (result == "none") {
+            if (hints != 0) {
+                if (hints == 1) {
+                    document.getElementById('hints').innerText = `${hints} indice restant`;
+                } else {
+                    document.getElementById('hints').innerText = `${hints} indices restants`;
+                }
+                document.getElementById('hints').style.color = "black";
+                document.getElementById('hints').style.fontWeight = "normal";
+            } else {
+                document.getElementById('hints').innerText = "Aucun indice restant !";
+                document.getElementById('hints').style.color = "red";
+                document.getElementById('hints').style.fontWeight = "bold";
+            }
+
+            if (previoushints > hints) {
+                document.getElementById('hints_alert').style.animation = "alert 5s linear";
+                setTimeout(() => {
+                    document.getElementById('hints_alert').style.animation = "none";
+                }, 5000);
+            }
+
+            document.getElementById('penalties').innerText = `${penalties} secondes de pénalité`;
 
             // var countDownDate = new Date(Date.parse(finishdate)).getTime();
             // var now = new Date().getTime();
@@ -104,7 +151,7 @@
             //     document.getElementsByClassName("penalties")[0].style.color = "rgb(23, 201, 0)";
             // }
 
-            // previoushints = hints;
+            previoushints = hints;
 
             // Chargement du fichier JSON
             fetch('game1-logs.json')
@@ -118,7 +165,7 @@
 
                     // Pour chaque entrée dans la liste "logs"
                     logs.forEach(log => {
-                        if(!logs_ids.includes(log.id)) {
+                        if (!logs_ids.includes(log.id)) {
                             // Création de l'élément div "log"
                             const logElement = document.createElement('div');
                             logElement.classList.add('log');
@@ -217,22 +264,5 @@
                     logs_section.scrollTop = logs_section.scrollHeight;
                 });
         }
-    }
-
-    function requestHint() {
-        document.getElementById('indices').disabled = true;
-        $.ajax({
-            url:"./elements/setHints.php",
-            async: false,
-            success:function(data){
-                hints = data;
-                document.getElementById('indices').innerText = `${hints}/6 indices`;
-                if(hints == 0) {
-                    document.getElementById('indices').disabled = true;
-                } else {
-                    document.getElementById('indices').disabled = false;
-                }
-            }
-        });
     }
 </script>

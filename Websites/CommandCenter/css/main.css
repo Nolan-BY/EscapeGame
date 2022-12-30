@@ -17,6 +17,7 @@ body {
 }
 
 main {
+    display: flex;
     max-width: 200rem;
     width: 100%;
     height: max-content;
@@ -153,11 +154,17 @@ header {
 
 /* Logs */
 
+#logs_container {
+    width: 50%;
+    margin-left: 3%;
+    margin-right: 1%;
+    z-index: 100;
+}
+
 #logs_title {
     display: flex;
     position: relative;
     margin-top: 5rem;
-    margin-left: 4.5rem;
     margin-bottom: 0.5rem;
     font-size: xx-large;
 }
@@ -172,7 +179,6 @@ header {
     max-width: 50rem;
     overflow-x: hidden;
     overflow-y: auto;
-    margin-left: 4rem;
     padding: 1rem;
     border: black solid;
     border-radius: 1rem;
@@ -213,4 +219,106 @@ header {
     display: block;
     color: black;
     margin: auto 1rem auto 0;
+}
+
+/* Hints */
+
+#hints_container {
+    width: 25%;
+    margin-right: 1%;
+    display: grid;
+    align-content: baseline;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 10;
+}
+
+#hints_panel_title {
+    display: flex;
+    position: relative;
+    margin-top: 5rem;
+    font-size: xx-large;
+    margin-bottom: 0.5rem;
+}
+
+#hints_panel {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 5rem;
+    max-height: 5rem;
+    min-width: 25rem;
+    max-width: 25rem;
+    border: black solid;
+    border-radius: 1rem;
+    background-color: rgb(0, 105, 183);
+    margin: 0;
+    overflow: hidden;
+}
+
+#hints_alert {
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: -100%;
+    align-content: center;
+    background-color: rgb(221, 34, 34);
+    animation: none;
+}
+
+#hints_alert p {
+    font-size: xx-large;
+    font-weight: bold;
+    margin: auto;
+}
+
+#hints {
+    font-size: x-large;
+}
+
+@keyframes alert {
+    0% { top: -100%; }
+    10% { top: 0%; }
+    90% { top: 0%; }
+    100% { top: -100%; }
+}
+
+/* Penalties */
+
+#penalties_container {
+    width: 25%;
+    margin-right: 3%;
+    display: grid;
+    align-content: baseline;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 10;
+}
+
+#penalties_panel_title {
+    display: flex;
+    position: relative;
+    margin-top: 5rem;
+    font-size: xx-large;
+    margin-bottom: 0.5rem;
+}
+
+#penalties_panel {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 5rem;
+    max-height: 5rem;
+    min-width: 25rem;
+    max-width: 25rem;
+    border: black solid;
+    border-radius: 1rem;
+    background-color: rgb(0, 105, 183);
+    margin: 0;
+    overflow: hidden;
+}
+
+#penalties {
+    font-size: x-large;
 }

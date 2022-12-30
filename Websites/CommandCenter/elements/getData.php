@@ -10,7 +10,7 @@
 
     // ajout des résultats de la requête au tableau
     while ($row = mysqli_fetch_assoc($result)) {
-    $data[] = $row;
+        $data[] = $row;
     }
 
     // renvoi des données sous forme de JSON
