@@ -196,6 +196,12 @@ header {
     border-radius: 1rem;
     margin-bottom: 0.5rem;
     background-color: lightgray;
+    right: -110%;
+}
+
+@keyframes log {
+    0% { right: -110%; }
+    100% { right: 0%; }
 }
 
 .log p {

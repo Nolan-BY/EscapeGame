@@ -194,10 +194,14 @@
                             const dateText = document.createTextNode(log.date);
 
                             const enigmaText = document.createTextNode(log.enigma);
-                            const statusText = document.createTextNode(log.status);
+                            enigmaParagraph.style.fontWeight = "bold";
 
+                            const statusText = document.createTextNode(log.status);
+                            statusParagraph.style.fontWeight = "bold";
                             if (log.status == "Échouée") {
                                 statusParagraph.style.color = "red";
+                            } else if (log.status == "Demande") {
+                                statusParagraph.style.color = "blue";
                             } else {
                                 statusParagraph.style.color = "green";
                             }
@@ -234,8 +238,12 @@
 
                             // Ajout de l'élément "log" à la section d'ID "logs"
                             document.getElementById('logs').appendChild(logElement);
+                            logElement.style.animation = "log 0.5s linear forwards";
 
                             logs_ids.push(log.id);
+
+                            var logs_section = document.getElementById("logs");
+                            logs_section.scrollTop = logs_section.scrollHeight;
                         }
                     });
                     for (let i = 0; i < logs_ids.length; i++) {
@@ -255,13 +263,13 @@
                                 // Suppression de l'identifiant de la liste "list"
                                 logs_ids.splice(i, 1);
 
-                            // Décrémentation de l'indice
-                            i--;
+                                // Décrémentation de l'indice
+                                i--;
                             }
+                            var logs_section = document.getElementById("logs");
+                            logs_section.scrollTop = logs_section.scrollHeight;
                         }
                     }
-                    var logs_section = document.getElementById("logs");
-                    logs_section.scrollTop = logs_section.scrollHeight;
                 });
         }
     }
