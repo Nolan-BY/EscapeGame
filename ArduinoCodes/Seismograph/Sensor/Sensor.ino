@@ -1,23 +1,25 @@
 #include <SoftwareSerial.h>
 #include "Arduino_SensorKit.h"
+#include <SerialESP8266wifi.h>
 
-// // serial config
-#define     RX    2
-#define     TX    3
-SoftwareSerial AT(RX,TX);
+// Serial config
+#define sw_serial_rx_pin 2  // Pin to TX
+#define sw_serial_tx_pin 3  // Pin to RX
+#define esp8266_reset_pin 4 // Pin to CH_PD, not reset
+SoftwareSerial swSerial(sw_serial_rx_pin, sw_serial_tx_pin);
 
-// TODO: change user config
-String ssid     = "ArduinoEarth"; //Wifi SSID
-String password = "chevre007"; //Wifi Password
-const unsigned int writeInterval = 25000; // write interval (in ms)
+SerialESP8266wifi wifi(swSerial, swSerial, esp8266_reset_pin, Serial);
 
-int AT_cmd_time; 
-boolean AT_cmd_result = false;
+// User config
+#define ssid "ArduinoEarth" // Wifi SSID
+#define password "chevre007" // Wifi Password
+
+String inputString;
 
 bool alerte = false;
 
 float x1 = 0.0;
-float yaxis1 = 0.0;
+float y1 = 0.0;
 float z1 = 0.0;
 
 float x = 0.0;
@@ -26,32 +28,32 @@ float z = 0.0;
 
 void setup() {
   Serial.begin(9600);
-  while(!Serial);
+  inputString.reserve(20);
+  swSerial.begin(9600);
   Accelerometer.begin();
-  // open serial 
-  Serial.println("*****************************************************");
-  Serial.println("Program Start : Connect Arduino WiFi to AskSensors");
-  AT.begin(9600);
-  Serial.println("Initiate AT commands with ESP8266 ");
-  sendATcmd("AT",5,"OK");
-  sendATcmd("AT+CWMODE=1",5,"OK");
-  Serial.print("Connecting to WiFi: ");
-  Serial.println(ssid);
-  sendATcmd("AT+CWJAP=\""+ ssid +"\",\""+ password +"\"",20,"OK");
-  Serial.print("Connected !");
-  Serial.println(WiFi.localIP());
-  sendATcmd("AT+CIPCLOSE=0",2,"OK"); 
+  
+  while (!Serial);
+  Serial.println("Starting wifi");
+  wifi.setTransportToTCP();
+  wifi.endSendWithNewline(true);
+  wifi.begin();
+  wifi.connectToAP(ssid, password);
+  wifi.connectToServer("192.168.59.54", "9999");
 }
 
 void loop() {
+  if (!wifi.isStarted()) {
+    wifi.begin();
+  }
+  
   x1 = Accelerometer.readX();
-  yaxis1 = Accelerometer.readY();
+  y1 = Accelerometer.readY();
   z1 = Accelerometer.readZ();
 
   delay(100);
 
   x = Accelerometer.readX()-x1;
-  y = Accelerometer.readY()-yaxis1;
+  y = Accelerometer.readY()-y1;
   z = Accelerometer.readZ()-z1;
   int alerte_confirm = 0;
   
@@ -61,16 +63,7 @@ void loop() {
       if (alerte_confirm == 5) {
         Serial.println("TREMBLEMENT DE TERRE !");
         alerte = true;
-        Serial.println("*****************************************************");
-        Serial.println("Open TCP connection ");
-        sendATcmd("AT+CIPMUX=1", 2, "OK");
-        sendATcmd("AT+CIPSTART=0,\"TCP\",\"192.168.1.85\",4444", 2, "OK");          
-        sendATcmd("AT+CIPSEND=0,4", 1, ">");
-        delay(20);
-        AT.write("true\r");
-        Serial.print("********** sending data: ");
-        sendATcmd("AT+CIPCLOSE=0",2,"OK");
-        delay(2000);
+        wifi.send(SERVER, "SyR");
       }
       Serial.println(alerte_confirm);
     }
@@ -81,13 +74,13 @@ void loop() {
     delay(500);
 
     x1 = Accelerometer.readX();
-    yaxis1 = Accelerometer.readY();
+    y1 = Accelerometer.readY();
     z1 = Accelerometer.readZ();
 
     delay(100);
 
     x = Accelerometer.readX()-x1;
-    y = Accelerometer.readY()-yaxis1;
+    y = Accelerometer.readY()-y1;
     z = Accelerometer.readZ()-z1;
 
     delay(500);
@@ -96,47 +89,8 @@ void loop() {
 
   if (alerte == true) {
     alerte = false;
-    Serial.println("*****************************************************");
-    Serial.println("Open TCP connection ");
-    sendATcmd("AT+CIPMUX=1", 2, "OK");
-    sendATcmd("AT+CIPSTART=0,\"TCP\",\"192.168.82.85\",4444", 2, "OK");          
-    sendATcmd("AT+CIPSEND=0,5", 1, ">");
-    delay(20);
-    AT.write("false\r");
-    Serial.print("********** sending data: ");
-    sendATcmd("AT+CIPCLOSE=0",2,"OK");
-    delay(2000);
+    wifi.send(SERVER, "SyF");
   }
   Serial.println("RAS");
   delay(500);
 }
-
-
-
-// sendATcmd
-void sendATcmd(String AT_cmd, int AT_cmd_maxTime, char readReplay[]) {
-  Serial.print("AT command:");
-  Serial.println(AT_cmd);
-
-  while(AT_cmd_time < (AT_cmd_maxTime)) {
-    AT.println(AT_cmd);
-    if(AT.find(readReplay)) {
-      AT_cmd_result = true;
-      break;
-    }
-  
-    AT_cmd_time++;
-  }
-  Serial.println("...Result:");
-  if(AT_cmd_result == true) {
-    Serial.println("DONE");
-    AT_cmd_time = 0;
-  }
-  
-  if(AT_cmd_result == false) {
-    Serial.println("FAILED");
-    AT_cmd_time = 0;
-  }
-  
-  AT_cmd_result = false;
- }

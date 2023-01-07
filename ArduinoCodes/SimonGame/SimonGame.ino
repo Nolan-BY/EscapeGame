@@ -1,3 +1,20 @@
+#include <SoftwareSerial.h>
+#include <SerialESP8266wifi.h>
+
+// Serial config
+#define sw_serial_rx_pin A0  // Pin to TX
+#define sw_serial_tx_pin A1  // Pin to RX
+#define esp8266_reset_pin A2 // Pin to CH_PD, not reset
+SoftwareSerial swSerial(sw_serial_rx_pin, sw_serial_tx_pin);
+
+SerialESP8266wifi wifi(swSerial, swSerial, esp8266_reset_pin, Serial);
+
+// User config
+#define ssid "ArduinoEarth" // Wifi SSID
+#define password "chevre007" // Wifi Password
+
+String inputString;
+
 int y = 0;
 String reponse = "";
 
@@ -28,6 +45,9 @@ unsigned long startTime;
 
 void setup() {
   Serial.begin(9600);
+  inputString.reserve(20);
+  swSerial.begin(9600);
+
   pinMode(GREEN, OUTPUT);
   pinMode(BLUE, OUTPUT);
   pinMode(YELLOW, OUTPUT);
@@ -38,6 +58,14 @@ void setup() {
   pinMode(RED_BTN, INPUT_PULLUP);
   pinMode(BUZZER, OUTPUT);
   pinMode(RESET, INPUT_PULLUP);
+
+  while (!Serial);
+  Serial.println("Starting wifi");
+  wifi.setTransportToTCP();
+  wifi.endSendWithNewline(true);
+  wifi.begin();
+  wifi.connectToAP(ssid, password);
+  wifi.connectToServer("192.168.59.54", "9999");
 }
 
 
@@ -168,6 +196,7 @@ void doCode(char* code_source) {
     delay(500);
     noTone(BUZZER);
     digitalWrite(RED, LOW);
+    wifi.send(SERVER, "SiF");
     reponse = "";
     y = 0;
   }
@@ -176,6 +205,7 @@ void doCode(char* code_source) {
 
 void win() {
   delay(1000);
+  wifi.send(SERVER, "SiR");
   for (int i = 0; i<4; i++) {
     digitalWrite(GREEN, HIGH);
     digitalWrite(BLUE, HIGH);
@@ -194,6 +224,10 @@ void win() {
 
 
 void loop() {
+  if (!wifi.isStarted()) {
+    wifi.begin();
+  }
+  
   if ((digitalRead(RESET) == LOW) && (y == 0)) {
     Serial.println("OKAY !");
     jeu();
@@ -235,7 +269,7 @@ void jeu() {
     }
     if (y != 0) {
       y = 0;
-      win();
+      win();    
     }
   }
 }

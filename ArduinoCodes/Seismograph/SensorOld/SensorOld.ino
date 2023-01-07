@@ -4,7 +4,7 @@
 // // serial config
 #define     RX    2
 #define     TX    3
-SoftwareSerial AT(RX,TX); 
+SoftwareSerial AT(RX,TX);
 
 // TODO: change user config
 String ssid     = "ArduinoEarth"; //Wifi SSID
@@ -39,7 +39,7 @@ void setup() {
   Serial.println(ssid);
   sendATcmd("AT+CWJAP=\""+ ssid +"\",\""+ password +"\"",20,"OK");
   Serial.print("Connected !");
-  Serial.println(AT.write("AT+CIFSR"));
+  Serial.println(WiFi.localIP());
   sendATcmd("AT+CIPCLOSE=0",2,"OK"); 
 }
 
