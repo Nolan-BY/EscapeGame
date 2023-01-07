@@ -32,7 +32,6 @@ void setup() {
   swSerial.begin(9600);
   Accelerometer.begin();
   
-  while (!Serial);
   Serial.println("Starting wifi");
   wifi.setTransportToTCP();
   wifi.endSendWithNewline(true);

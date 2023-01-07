@@ -3,9 +3,9 @@
 #include <SerialESP8266wifi.h>
 
 // Serial config
-#define sw_serial_rx_pin 13  // Pin to TX
+#define sw_serial_rx_pin 11  // Pin to TX
 #define sw_serial_tx_pin 12  // Pin to RX
-#define esp8266_reset_pin 11 // Pin to CH_PD, not reset
+#define esp8266_reset_pin 13 // Pin to CH_PD, not reset
 SoftwareSerial swSerial(sw_serial_rx_pin, sw_serial_tx_pin);
 
 SerialESP8266wifi wifi(swSerial, swSerial, esp8266_reset_pin, Serial);
