@@ -59,6 +59,7 @@ void setup() {
   pinMode(BUZZER, OUTPUT);
   pinMode(RESET, INPUT_PULLUP);
 
+  while(!Serial);
   Serial.println("Starting wifi");
   wifi.setTransportToTCP();
   wifi.endSendWithNewline(true);

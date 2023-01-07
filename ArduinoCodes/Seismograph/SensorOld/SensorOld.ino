@@ -2,8 +2,8 @@
 #include "Arduino_SensorKit.h"
 
 // // serial config
-#define     RX    2
-#define     TX    3
+#define     RX    3
+#define     TX    2
 SoftwareSerial AT(RX,TX);
 
 // TODO: change user config
@@ -33,13 +33,12 @@ void setup() {
   Serial.println("Program Start : Connect Arduino WiFi to AskSensors");
   AT.begin(9600);
   Serial.println("Initiate AT commands with ESP8266 ");
-  sendATcmd("AT",5,"OK");
+  sendATcmd("AT+GMR",5,"OK");
   sendATcmd("AT+CWMODE=1",5,"OK");
   Serial.print("Connecting to WiFi: ");
   Serial.println(ssid);
   sendATcmd("AT+CWJAP=\""+ ssid +"\",\""+ password +"\"",20,"OK");
   Serial.print("Connected !");
-  Serial.println(WiFi.localIP());
   sendATcmd("AT+CIPCLOSE=0",2,"OK"); 
 }
 

@@ -28,13 +28,15 @@ float z = 0.0;
 
 void setup() {
   Serial.begin(9600);
-  inputString.reserve(20);
   swSerial.begin(9600);
+  inputString.reserve(20);
+
   Accelerometer.begin();
   
+  while(!Serial);
   Serial.println("Starting wifi");
   wifi.setTransportToTCP();
-  wifi.endSendWithNewline(true);
+  wifi.endSendWithNewline(false);
   wifi.begin();
   wifi.connectToAP(ssid, password);
   wifi.connectToServer("192.168.59.54", "9999");

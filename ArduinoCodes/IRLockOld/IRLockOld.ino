@@ -21,8 +21,7 @@ IRrecv reception_ir(broche_reception); // Crée une instance de réception
 decode_results decode_ir; // Décodage et stockage des données reçues
 
 // Initialisation du bon code à avoir
-String code = "167180551671805516718055";
-//String code = "1671805516718055167430451672417516738455";
+String code = "1671805516718055167430451672417516738455";
 String test_code = "";
 String msg = "";
 
@@ -61,13 +60,13 @@ void loop() {
 
   if (test_code.length() != code.length()) {
     if (reception_ir.decode(&decode_ir)) {
-      msg = "16718055";
+      msg = decode_ir.value, HEX;
       Serial.println(msg);
       
       if (msg.substring(0,3) == "167") {
         test_code.concat(msg);
         Serial.println(test_code);
-        digitalWrite(BLUE, HIGH);
+        digitalWrite(2, HIGH);
         tone(BUZZER, 300, 50);
         delay(100);
         noTone(BUZZER);
@@ -78,30 +77,30 @@ void loop() {
   }
   else {
     if (test_code == code) {
-      digitalWrite(GREEN, HIGH);
+      wifi.send(SERVER, "LoR");
+      digitalWrite(4, HIGH);
       analogWrite(LOCK, LOW);
-      tone(BUZZER, 400, 100);
+      tone(BUZZER, 400, 250);
       delay(500);
       noTone(BUZZER);
       test_code = "";
-      wifi.send(SERVER, "LoR");
       delay(10000);
     }
     else {
-      digitalWrite(RED, HIGH);
+      wifi.send(SERVER, "LoF");
+      digitalWrite(3, HIGH);
       tone(BUZZER, 200, 50);
       delay(100);
       noTone(BUZZER);
       test_code = "";
-      wifi.send(SERVER, "LoF");
       delay(1000); 
     }
   }
 
   delay(100);
   digitalWrite(LOCK, HIGH);
-  digitalWrite(BLUE, LOW);
+  digitalWrite(2, LOW);
   delay(100);
-  digitalWrite(RED, LOW);
-  digitalWrite(GREEN, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
 }

@@ -17,7 +17,7 @@ body {
 }
 
 main {
-    display: flex;
+    display: grid;
     max-width: 200rem;
     width: 100%;
     height: max-content;
@@ -77,31 +77,6 @@ header {
     align-self: center;
 }
 
-.penalties {
-    display: block;
-    font-weight: 600;
-    color: rgb(0, 0, 0);
-    font-size: 1.3rem;
-    align-self: center;
-    width: fit-content;
-    padding: 0.5rem 1.2rem 0.5rem 1.2rem;
-    border: 0.2rem rgb(0, 0, 0) solid;
-    border-radius: 50rem;
-}
-
-#indices {
-    display: block;
-    font-weight: 400;
-    color: rgb(0, 0, 0);
-    background-color: rgb(184, 184, 184);
-    font-size: 1.3rem;
-    align-self: center;
-    width: fit-content;
-    padding: 0.5rem 1.2rem 0.5rem 1.2rem;
-    border: 0.2rem rgb(0, 0, 0) solid;
-    border-radius: 50rem;
-    margin-left: auto;
-}
 
 #indices:hover {
     background-color: rgb(134, 134, 134);
@@ -117,39 +92,58 @@ header {
     border: 0.2rem rgb(0, 0, 0, 0.4) solid;
 }
 
-/* Intro */
+/* Sections */
 
-#intro_text {
+#upper {
+    position: relative;
+    width: 100%;
+    display: flex;
+}
+
+#lower {
+    position: relative;
+    width: 100%;
+    display: flex;
+}
+
+/* Timer */
+
+#timer_container {
+    width: max-content;
+    margin-right: 1%;
+    display: grid;
+    align-content: baseline;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 10;
+    margin-left: 3%;
+}
+
+#timer_panel_title {
     display: flex;
     position: relative;
     margin-top: 5rem;
-    justify-content: center;
-    align-items: center;
-    min-width: max-content;
-    font-weight: 500;
-    color: rgb(179, 0, 0);
-    font-size: 1.3rem;
+    font-size: xx-large;
+    margin-bottom: 0.5rem;
 }
 
-/* Formulaire */
-
-#checkcode {
-    display: inline-block;
+#timer_panel {
+    display: flex;
+    flex-direction: column;
     position: relative;
-    height: max-content;
-    width: max-content;
-    margin-top: 5rem;
+    min-height: 5rem;
+    max-height: 5rem;
+    min-width: 25rem;
+    max-width: 25rem;
+    border: black solid;
+    border-radius: 1rem;
+    background-color: rgb(0, 105, 183);
+    margin: 0;
+    overflow: hidden;
 }
 
-#checkcode input {
-    height: 2rem;
-    width: 20rem;
-    margin-right: 0.5rem;
-}
-
-#valider {
-    position: relative;
-    width: 10rem;
+#timer {
+    font-size: x-large;
 }
 
 /* Logs */
@@ -164,7 +158,6 @@ header {
 #logs_title {
     display: flex;
     position: relative;
-    margin-top: 5rem;
     margin-bottom: 0.5rem;
     font-size: xx-large;
 }
@@ -242,7 +235,6 @@ header {
 #hints_panel_title {
     display: flex;
     position: relative;
-    margin-top: 5rem;
     font-size: xx-large;
     margin-bottom: 0.5rem;
 }
@@ -305,7 +297,6 @@ header {
 #penalties_panel_title {
     display: flex;
     position: relative;
-    margin-top: 5rem;
     font-size: xx-large;
     margin-bottom: 0.5rem;
 }
@@ -326,5 +317,41 @@ header {
 }
 
 #penalties {
+    font-size: x-large;
+}
+
+/* Results */
+
+#results_container {
+    width: 50%;
+    margin-left: 3%;
+    margin-right: 1%;
+    z-index: 100;
+}
+
+#results_panel_title {
+    display: flex;
+    position: relative;
+    margin-bottom: 0.5rem;
+    font-size: xx-large;
+}
+
+#results_panel {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 20rem;
+    max-height: 20rem;
+    min-width: max-content;
+    max-width: 50rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 1rem;
+    border: black solid;
+    border-radius: 1rem;
+    background-color: rgb(0, 105, 183);
+}
+
+#results {
     font-size: x-large;
 }
