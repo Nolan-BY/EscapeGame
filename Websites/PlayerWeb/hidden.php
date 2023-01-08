@@ -1,4 +1,33 @@
-<?php include('./elements/session.php'); ?>
+<?php include('./elements/session.php');
+    include('./elements/config.php');
+    if(isset($_SESSION['user']) and !isset($_SESSION['result'])){
+        $hints = mysqli_fetch_array(mysqli_query($con, "SELECT hints FROM gamecontrol LIMIT 1"));
+        $_SESSION['hints'] = $hints['hints'];
+        $penalties = mysqli_fetch_array(mysqli_query($con, "SELECT penalties FROM gamecontrol LIMIT 1"));
+        $_SESSION['penalties'] = $penalties['penalties'];
+
+        date_default_timezone_set('Europe/Paris');
+        $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
+        
+        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r+');
+        $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
+
+        $logs = json_decode($logsData, true);
+
+        $logs['logs'][] = array(
+            "id" => 'Hid'.strval($timeRemaining),
+            "enigma" => "Page cachée",
+            "time" => date('H:i:s'),
+            "status" => "Réussie",
+            "time_left" => $timeRemaining,
+            "penalties" => $_SESSION['penalties'],
+            "hints" => $_SESSION['hints']
+        );
+
+        fwrite($logsFile, json_encode($logs));
+        fclose($logsFile);
+    }
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -30,10 +59,11 @@
         </div>
     </header>
     <main>
-        <p id="tel_text">En cas d'urgence grave, un numéro direct pour l'observatoire de l'IRSCN est disponible sur cette page.
-            <br />&nbsp;<br />Veullez ne pas encombrer la ligne en cas d'urgence et ne pas appeler si la situation ne le requiert pas.
+        <p id="mas_text">En cas d'urgence grave, un numéro direct pour l'observatoire de l'IRSCN est disponible via un logiciel de VoIP.
+            <br />&nbsp;<br />Veullez ne pas encombrer la ligne en cas d'urgence et ne pas appeler si la situation ne le requiert pas !
+            <br />&nbsp;<br />Cliquez sur le lien ci-dessous afin de prendre connaissance de la marche à suivre.
         </p>
-        <p id='tel'>06 56 76 78 61</p>
+        <a id="mas" target="_blank" href="./assets/urgent_contact.pdf">Marche à suivre</a>
     </main>
     <footer style="position: relative;">
         <p>Copyright 2022 - Meilleur groupe du TP1</p>

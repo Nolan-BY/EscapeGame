@@ -19,7 +19,7 @@ body {
 main {
     max-width: 200rem;
     width: 100%;
-    height: max-content;
+    height: auto;
     padding-left: 0;
     padding-right: 0;
     margin: auto;
@@ -118,7 +118,7 @@ header {
 
 /* Intro */
 
-#tel_text {
+#mas_text {
     display: flex;
     position: relative;
     margin-top: 5rem;
@@ -128,10 +128,10 @@ header {
     font-weight: 500;
     color: rgb(0, 0, 0);
     font-size: 1.8rem;
-    margin-bottom: 10rem;
+    margin-bottom: 5rem;
 }
 
-#tel {
+#mas {
     display: flex;
     position: relative;
     margin-top: 5rem;
@@ -141,5 +141,10 @@ header {
     font-weight: 500;
     color: rgb(179, 0, 0);
     font-size: 5rem;
-    margin-bottom: 20rem;
+    margin-bottom: 5rem;
+    text-decoration: underline;
+}
+
+#mas:visited {
+    text-decoration: none;
 }

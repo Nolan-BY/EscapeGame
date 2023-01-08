@@ -4,6 +4,11 @@
 
     include "config.php";
 
+    $game_logs = '/home/sae310/logs/game-logs.json';
+
+    copy($game_logs, '/home/sae310/logs-archives/'.$_SESSION['team_name'].'-logs.json');
+    unlink($game_logs);
+
     if (isset($_SESSION['penalties'])) {
         unset($_SESSION['penalties']);
         mysqli_query($con,"UPDATE gamecontrol SET penalties='0' LIMIT 1");

@@ -204,7 +204,6 @@ void doCode(char* code_source) {
 
 
 void win() {
-  delay(1000);
   wifi.send(SERVER, "SiR");
   for (int i = 0; i<4; i++) {
     digitalWrite(GREEN, HIGH);

@@ -43,10 +43,10 @@ void setup() {
 void loop() {
   while (AT.available() > 0) {
     String message = AT.readString();
-    if (message.indexOf("SyT") >= 1) {
+    if (message.indexOf("SyR") >= 1) {
       alarm_state = true;
     }
-    if (message.indexOf("SyF") >= 1) {
+    if (message.indexOf("SyE") >= 1) {
       alarm_state = false;
     }
     Serial.println("State: " + String(alarm_state));

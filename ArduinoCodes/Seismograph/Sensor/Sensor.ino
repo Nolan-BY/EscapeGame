@@ -90,7 +90,7 @@ void loop() {
 
   if (alerte == true) {
     alerte = false;
-    wifi.send(SERVER, "SyF");
+    wifi.send(SERVER, "SyE");
   }
   Serial.println("RAS");
   delay(500);

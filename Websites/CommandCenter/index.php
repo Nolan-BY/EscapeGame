@@ -58,17 +58,19 @@
             </div>
         </section>
 
-        <div id="results_container" style="display: none;">
-            <p id="results_panel_title">Résultats</p>
-            <section id="results_panel">
-                <p id="results_team">TEST</p>
-                <p id="results_status">Gagné</p>
-                <p id="results_timeleft">222</p>
-                <p id="results_penalties">222</p>
-                <p id="results_hints">Placeholder</p>
-                <p id="results_score">222</p>
-            </section>
-        </div>
+        <section id="results_section" style="display: none;">
+            <div id="results_container">
+                <p id="results_panel_title">Résultats</p>
+                <section id="results_panel">
+                    <p id="results_team">Placeholder</p>
+                    <p id="results_status">Placeholder</p>
+                    <p id="results_timeleft">Placeholder</p>
+                    <p id="results_penalties">Placeholder</p>
+                    <p id="results_hints">Placeholder</p>
+                    <p id="results_score">Placeholder</p>
+                </section>
+            </div>
+        </section>
     </main>
     <footer style="position: relative;">
         <p>Copyright 2022 - Meilleur groupe du TP1</p>
@@ -83,17 +85,19 @@
     var updateSecInt;
     var logs_ids = [];
 
+    var team_name;
+    var penalties;
+    var hints;
+    var finishdate;
+    var enddate;
+    var result;
+
+    var results_disp = false;
+
     updateSecInt = setInterval(updateSec, 1000);
     updateSec()
 
     function updateSec() {
-        var team_name;
-        var penalties;
-        var hints;
-        var finishdate;
-        var enddate;
-        var result;
-
         $.ajax({
             url:"./elements/getData.php",
             async: false,
@@ -108,74 +112,48 @@
             }
         });
 
-        console.log(result);
-
         if (result == "none") {
-            document.getElementById("results_container").style.display = "none";
+            results_disp = false;
+            document.getElementById("results_section").style.display = "none";
             if (finishdate != "none") {
-                var countDownDate = new Date(Date.parse(finishdate)).getTime();
-                var now = new Date().getTime();
-                var timeRemaining = (countDownDate - (penalties * 1000)) - now;
-
-                minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-                if(seconds < 10) {
-                    seconds = `0${seconds}`
-                }
-
-                if(timeRemaining > 0) {
-                    document.getElementById("timer").innerText = `${minutes}:${seconds}`;
-                } else {
-                    document.getElementById("timer").innerText = "Le temps est écoulé !";
-                }
+                countdown()
             } else {
                 document.getElementById("timer").innerText = "Attente démarrage...";
             }
 
-            if (hints != 0) {
-                if (hints == 1) {
-                    document.getElementById('hints').innerText = `${hints} indice restant`;
-                } else {
-                    document.getElementById('hints').innerText = `${hints} indices restants`;
-                }
-                document.getElementById('hints').style.color = "black";
-                document.getElementById('hints').style.fontWeight = "normal";
-            } else {
-                document.getElementById('hints').innerText = "Aucun indice restant !";
-                document.getElementById('hints').style.color = "red";
-                document.getElementById('hints').style.fontWeight = "bold";
-            }
+            hints_func()
 
-            if (previoushints > hints) {
-                document.getElementById('hints_alert').style.animation = "alert 5s linear";
-                setTimeout(() => {
-                    document.getElementById('hints_alert').style.animation = "none";
-                }, 5000);
-            }
+            document.getElementById('penalties').innerHTML = `<b>${penalties}</b> secondes de pénalité`;
 
-            document.getElementById('penalties').innerText = `${penalties} secondes de pénalité`;
-
-            previoushints = hints;
             logs()
 
         } else {
 
             logs()
-            document.getElementById("results_container").style.display = "flex";
+            document.getElementById("results_section").style.display = "flex";
+
+            hints_func()
+
+            if (results_disp == false) {
+                window.scroll({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+                results_disp = true;
+            }
+
+            document.getElementById("timer").innerHTML = "<b>Escape Game terminé !</b>";
+            document.getElementById('penalties').innerHTML = `<b>${penalties}</b> secondes de pénalité`;
 
             // Need to retreive value from database based on enigmas success or fail
             var result_enigmas = 0;
 
             document.getElementById('results_team').innerHTML = `Équipe &thinsp;<b>${team_name}</b>`;
 
-            if(result == 'win') {
+            if (result == 'win') {
                 document.getElementById('results_status').innerHTML = "Victoire !";
-                document.getElementById('results_status').style.color = 'rgb(0, 117, 6)';
+                document.getElementById('results_status').style.color = 'rgb(27, 201, 5)';
                 result_enigmas += 20;
-            } else if(result == 'lost') {
+            } else if (result == 'lost') {
                 document.getElementById('results_status').innerHTML = "Défaite !";
-                document.getElementById('results_status').style.color = 'rgb(179, 0, 0s)';
+                document.getElementById('results_status').style.color = 'rgb(179, 0, 0)';
                 result_enigmas -= 50;
             }
             
@@ -185,38 +163,39 @@
             var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-            if(seconds < 0) {
+            if (seconds < 0) {
                 seconds = 0;
             }
-            if(minutes < 0) {
+            if (minutes < 0) {
                 minutes = 0;
             }
 
-            var score = Math.floor(((((minutes * 60) + seconds) * 100) / 600) + result_enigmas);
+            // Retreive from database
+            var score = Math.floor(((((minutes * 60) + seconds) * 100) / 1200) + result_enigmas - (5 * (6 - hints)));
 
-            if(score < 0) {
+            if (score < 0) {
                 score = 0;
             }
 
-            if(seconds < 10) {
+            if (seconds < 10) {
                 seconds = `0${seconds}`
             }
 
-            if(minutes > 1 && seconds > 1) {
+            if (minutes > 1 && seconds > 1) {
                 document.getElementById('results_timeleft').innerHTML = `Il restait : &thinsp;<b>${minutes} minutes et ${seconds} secondes</b>`;
-            } else if(minutes == 1 && seconds == 1) {
+            } else if (minutes == 1 && seconds == 1) {
                 document.getElementById('results_timeleft').innerHTML = `Il restait : &thinsp;<b>${minutes} minute et ${seconds} seconde</b>`;
-            } else if(minutes == 1 && seconds > 1) {
+            } else if (minutes == 1 && seconds > 1) {
                 document.getElementById('results_timeleft').innerHTML = `Il restait : &thinsp;<b>${minutes} minute et ${seconds} secondes</b>`;
-            } else if(minutes > 1 && seconds == 0) {
+            } else if (minutes > 1 && seconds == 0) {
                 document.getElementById('results_timeleft').innerHTML = `Il restait : &thinsp;<b>${minutes} minutes</b>`;
-            } else if(minutes == 1 && seconds == 0) {
+            } else if (minutes == 1 && seconds == 0) {
                 document.getElementById('results_timeleft').innerHTML = `Il restait : &thinsp;<b>${minutes} minute</b>`;
-            } else if(minutes == 0 && seconds > 1) {
+            } else if (minutes == 0 && seconds > 1) {
                 document.getElementById('results_timeleft').innerHTML = `Il restait : &thinsp;<b>${seconds} secondes</b>`;
-            } else if(minutes == 0 && seconds == 1) {
+            } else if (minutes == 0 && seconds == 1) {
                 document.getElementById('results_timeleft').innerHTML = `Il restait : &thinsp;<b>${seconds} seconde</b>`;
-            } else if(minutes == 0 && seconds == 0) {
+            } else if (minutes == 0 && seconds == 0) {
                 document.getElementById('results_timeleft').innerHTML = '<b>Le temps était écoulé !</b>';
             }
 
@@ -238,112 +217,140 @@
                 }
             } else {
                 document.getElementById('results_hints').innerText = "Il ne restait aucun indice !";
-                document.getElementById('results_hints').style.color = "red";
                 document.getElementById('results_hints').style.fontWeight = "bold";
             }
         }
     }
 
     function logs() {
-        // Chargement du fichier JSON
-        fetch('game1-logs.json')
-            .then(response => response.json())
-            .then(data => {
+        $.ajax({
+            url:"./elements/getLogs.php",
+            async: false,
+            success:function(data){
+                const logsData = JSON.parse(data);
+                const logs = logsData.logs;
+                var team_name_log = logsData.team_name;
+
                 var time_left_minutes = 0;
                 var time_left_seconds = 0;
 
-                // Récupération de la liste "logs"
-                const logs = data.logs;
+                if (logs != null) {
+                    // Pour chaque entrée dans la liste "logs"
+                    logs.forEach(log => {
+                        if (!logs_ids.includes(log.id)) {
+                            // Création de l'élément div "log"
+                            const logElement = document.createElement('div');
+                            logElement.classList.add('log');
+                            logElement.id = log.id;
 
-                // Pour chaque entrée dans la liste "logs"
-                logs.forEach(log => {
-                    if (!logs_ids.includes(log.id)) {
-                        // Création de l'élément div "log"
-                        const logElement = document.createElement('div');
-                        logElement.classList.add('log');
-                        logElement.id = log.id;
+                            // Création des éléments div "general", "enigma" et "game_stats"
+                            const generalElement = document.createElement('div');
+                            generalElement.classList.add('general');
+                            const enigmaElement = document.createElement('div');
+                            enigmaElement.classList.add('enigma');
+                            const gameStatsElement = document.createElement('div');
+                            gameStatsElement.classList.add('game_stats');
 
-                        // Création des éléments div "general", "enigma" et "game_stats"
-                        const generalElement = document.createElement('div');
-                        generalElement.classList.add('general');
-                        const enigmaElement = document.createElement('div');
-                        enigmaElement.classList.add('enigma');
-                        const gameStatsElement = document.createElement('div');
-                        gameStatsElement.classList.add('game_stats');
+                            // Création des éléments p pour chaque entrée de données
+                            const team_nameParagraph = document.createElement('p');
+                            team_nameParagraph.style.fontWeight = "bold";
+                            const timeParagraph = document.createElement('p');
+                            const enigmaParagraph = document.createElement('p');
+                            const statusParagraph = document.createElement('p');
+                            const timeLeftParagraph = document.createElement('p');
+                            const penaltiesParagraph = document.createElement('p');
+                            const hintsParagraph = document.createElement('p');
 
-                        // Création des éléments p pour chaque entrée de données
-                        const team_nameParagraph = document.createElement('p');
-                        team_nameParagraph.style.fontWeight = "bold";
-                        const dateParagraph = document.createElement('p');
-                        const enigmaParagraph = document.createElement('p');
-                        const statusParagraph = document.createElement('p');
-                        const timeLeftParagraph = document.createElement('p');
-                        const penaltiesParagraph = document.createElement('p');
-                        const hintsParagraph = document.createElement('p');
+                            // Création des nœuds de texte pour chaque entrée de données
+                            const team_nameText = document.createTextNode("Équipe : " + team_name_log);
+                            const timeText = document.createTextNode(log.time);
 
-                        // Création des nœuds de texte pour chaque entrée de données
-                        const team_nameText = document.createTextNode("Équipe : " + data.team_name);
-                        const dateText = document.createTextNode(log.date);
+                            const enigmaText = document.createTextNode(log.enigma);
+                            enigmaParagraph.style.fontWeight = "bold";
 
-                        const enigmaText = document.createTextNode(log.enigma);
-                        enigmaParagraph.style.fontWeight = "bold";
+                            const statusText = document.createTextNode(log.status);
+                            statusParagraph.style.fontWeight = "bold";
+                            if (log.status == "Échouée") {
+                                statusParagraph.style.color = "red";
+                            } else if (log.status == "Demande") {
+                                statusParagraph.style.color = "blue";
+                            } else {
+                                statusParagraph.style.color = "green";
+                            }
 
-                        const statusText = document.createTextNode(log.status);
-                        statusParagraph.style.fontWeight = "bold";
-                        if (log.status == "Échouée") {
-                            statusParagraph.style.color = "red";
-                        } else if (log.status == "Demande") {
-                            statusParagraph.style.color = "blue";
-                        } else {
-                            statusParagraph.style.color = "green";
+                            time_left_minutes = Math.floor((log.time_left / 60));
+                            time_left_seconds = (log.time_left % 60);
+                            if (time_left_minutes < 10) {
+                                time_left_minutes = `0${time_left_minutes}`
+                            }
+                            if (time_left_seconds < 10) {
+                                time_left_seconds = `0${time_left_seconds}`
+                            }
+                            const timeLeftText = document.createTextNode(time_left_minutes + ":" + time_left_seconds);
+
+                            const penaltiesText = document.createTextNode("Pénalités : " + log.penalties + "s");
+                            const hintsText = document.createTextNode(log.hints + " indices restants");
+
+                            // Ajout des nœuds de texte aux éléments p correspondants
+                            team_nameParagraph.appendChild(team_nameText);
+                            timeParagraph.appendChild(timeText);
+                            enigmaParagraph.appendChild(enigmaText);
+                            statusParagraph.appendChild(statusText);
+                            timeLeftParagraph.appendChild(timeLeftText);
+                            penaltiesParagraph.appendChild(penaltiesText);
+                            hintsParagraph.appendChild(hintsText);
+
+                            // Ajout des nœuds de texte aux éléments div correspondants
+                            generalElement.appendChild(team_nameParagraph);
+                            generalElement.appendChild(timeParagraph);
+                            enigmaElement.appendChild(enigmaParagraph);
+                            enigmaElement.appendChild(statusParagraph);
+                            enigmaElement.appendChild(timeLeftParagraph);
+                            gameStatsElement.appendChild(penaltiesParagraph);
+                            gameStatsElement.appendChild(hintsParagraph);
+
+                            // Ajout des éléments enfants à l'élément "log"
+                            logElement.appendChild(generalElement);
+                            logElement.appendChild(enigmaElement);
+                            logElement.appendChild(gameStatsElement);
+
+                            // Ajout de l'élément "log" à la section d'ID "logs"
+                            document.getElementById('logs').appendChild(logElement);
+                            logElement.style.animation = "log 0.5s linear forwards";
+
+                            logs_ids.push(log.id);
+
+                            var logs_section = document.getElementById("logs");
+                            logs_section.scrollTop = logs_section.scrollHeight;
                         }
+                    });
+                    for (let i = 0; i < logs_ids.length; i++) {
+                        // Si l'identifiant n'est pas présent dans la liste "logs"
+                        if (!logs.some(log => log.id === logs_ids[i])) {
+                            // Récupération du div
+                            const div = document.getElementById(logs_ids[i]);
 
-                        time_left_minutes = Math.floor((log.time_left % (1000 * 60 * 60)) / (1000 * 60));
-                        time_left_seconds = Math.floor((log.time_left % (1000 * 60)) / 1000);
-                        const timeLeftText = document.createTextNode(time_left_minutes + ":" + time_left_seconds);
+                            // Si le div existe
+                            if (div) {
+                                // Récupération du parent du div
+                                const parent = div.parentNode;
 
-                        const penaltiesText = document.createTextNode("Pénalités : " + log.penalties + "s");
-                        const hintsText = document.createTextNode(log.hints + " indices restants");
+                                // Suppression du div
+                                parent.removeChild(div);
 
-                        // Ajout des nœuds de texte aux éléments p correspondants
-                        team_nameParagraph.appendChild(team_nameText);
-                        dateParagraph.appendChild(dateText);
-                        enigmaParagraph.appendChild(enigmaText);
-                        statusParagraph.appendChild(statusText);
-                        timeLeftParagraph.appendChild(timeLeftText);
-                        penaltiesParagraph.appendChild(penaltiesText);
-                        hintsParagraph.appendChild(hintsText);
+                                // Suppression de l'identifiant de la liste "list"
+                                logs_ids.splice(i, 1);
 
-                        // Ajout des nœuds de texte aux éléments div correspondants
-                        generalElement.appendChild(team_nameParagraph);
-                        generalElement.appendChild(dateParagraph);
-                        enigmaElement.appendChild(enigmaParagraph);
-                        enigmaElement.appendChild(statusParagraph);
-                        enigmaElement.appendChild(timeLeftParagraph);
-                        gameStatsElement.appendChild(penaltiesParagraph);
-                        gameStatsElement.appendChild(hintsParagraph);
-
-                        // Ajout des éléments enfants à l'élément "log"
-                        logElement.appendChild(generalElement);
-                        logElement.appendChild(enigmaElement);
-                        logElement.appendChild(gameStatsElement);
-
-                        // Ajout de l'élément "log" à la section d'ID "logs"
-                        document.getElementById('logs').appendChild(logElement);
-                        logElement.style.animation = "log 0.5s linear forwards";
-
-                        logs_ids.push(log.id);
-
-                        var logs_section = document.getElementById("logs");
-                        logs_section.scrollTop = logs_section.scrollHeight;
+                                // Décrémentation de l'indice
+                                i--;
+                            }
+                            var logs_section = document.getElementById("logs");
+                            logs_section.scrollTop = logs_section.scrollHeight;
+                        }
                     }
-                });
-                for (let i = 0; i < logs_ids.length; i++) {
-                    // Si l'identifiant n'est pas présent dans la liste "logs"
-                    if (!logs.some(log => log.id === logs_ids[i])) {
-                        // Récupération du div
+                } else {
+                    for (let i = 0; i < logs_ids.length; i++) {
                         const div = document.getElementById(logs_ids[i]);
-
                         // Si le div existe
                         if (div) {
                             // Récupération du parent du div
@@ -358,10 +365,52 @@
                             // Décrémentation de l'indice
                             i--;
                         }
-                        var logs_section = document.getElementById("logs");
-                        logs_section.scrollTop = logs_section.scrollHeight;
                     }
                 }
-            });
+            }
+        });
+    }
+
+    function countdown() {
+        var countDownDate = new Date(Date.parse(finishdate)).getTime();
+        var now = new Date().getTime();
+        var timeRemaining = (countDownDate - (penalties * 1000)) - now;
+
+        minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        if(seconds < 10) {
+            seconds = `0${seconds}`
+        }
+
+        if(timeRemaining > 0) {
+            document.getElementById("timer").innerText = `${minutes}:${seconds}`;
+        } else {
+            document.getElementById("timer").innerHTML = "<b>Le temps est écoulé !</b>";
+        }
+    }
+
+    function hints_func() {
+        if (hints != 0) {
+            if (hints == 1) {
+                document.getElementById('hints').innerHTML = `<b>${hints}</b> indice restant`;
+            } else {
+                document.getElementById('hints').innerHTML = `<b>${hints}</b> indices restants`;
+            }
+            document.getElementById('hints').style.color = "black";
+            document.getElementById('hints').style.fontWeight = "normal";
+        } else {
+            document.getElementById('hints').innerHTML = "<b>Aucun indice restant !</b>";
+            document.getElementById('hints').style.color = "red";
+            document.getElementById('hints').style.fontWeight = "bold";
+        }
+
+        if (previoushints > hints) {
+            document.getElementById('hints_alert').style.animation = "alert 5s linear";
+            setTimeout(() => {
+                document.getElementById('hints_alert').style.animation = "none";
+            }, 5000);
+        }
+        previoushints = hints;
     }
 </script>

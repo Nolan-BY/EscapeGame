@@ -106,7 +106,8 @@
     var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-    var score = Math.floor(((((minutes * 60) + seconds) * 100) / 600) + result_enigmas);
+    // Retreive from database
+    var score = Math.floor(((((minutes * 60) + seconds) * 100) / 1200) + result_enigmas - (5 * (hints)));
 
     if(score < 0) {
         score = 0;
