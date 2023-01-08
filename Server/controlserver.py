@@ -22,12 +22,23 @@ class ServeurTCP():
             self.serveur.listen(5)
             connexion, adresse = self.serveur.accept()
             print("Client connecté. Adresse : " + adresse[0])
+
+            enigmas = {"Sy": "Sismomètre",
+                        "Lo": "Verrou IR",
+                        "Si": "Simon"}
+
             while True:
                 message = connexion.recv(1024).decode("utf-8")
                 print("\nMessage>", message)
-                self.arduino.send(message.encode())
-            print("Connexion interrompue.")
-            connexion.close()
+                if message == "PEnd":
+                    print("Connexion interrompue.")
+                    connexion.close()
+                elif message in ["SyE", "SyR"]:
+                    self.arduino.send(message.encode())
+                
+                if message != "SyE":
+                    # JSON Code here
+                    pass
 
 if __name__ == "__main__":
     ServeurTCP()
