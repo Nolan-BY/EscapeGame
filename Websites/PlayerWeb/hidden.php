@@ -1,6 +1,8 @@
 <?php include('./elements/session.php');
     include('./elements/config.php');
     if(isset($_SESSION['user']) and !isset($_SESSION['result'])){
+        mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas + 5 LIMIT 1");
+
         $hints = mysqli_fetch_array(mysqli_query($con, "SELECT hints FROM gamecontrol LIMIT 1"));
         $_SESSION['hints'] = $hints['hints'];
         $penalties = mysqli_fetch_array(mysqli_query($con, "SELECT penalties FROM gamecontrol LIMIT 1"));

@@ -9,6 +9,16 @@
     copy($game_logs, '/home/sae310/logs-archives/'.$_SESSION['team_name'].'-logs.json');
     unlink($game_logs);
 
+    if (isset($_SESSION['score'])) {
+        unset($_SESSION['score']);
+        mysqli_query($con,"UPDATE gamecontrol SET score='0' LIMIT 1");
+    }
+
+    if (isset($_SESSION['result_enigmas'])) {
+        unset($_SESSION['result_enigmas']);
+        mysqli_query($con, "UPDATE gamecontrol SET result_enigmas='0' LIMIT 1");
+    }
+
     if (isset($_SESSION['penalties'])) {
         unset($_SESSION['penalties']);
         mysqli_query($con,"UPDATE gamecontrol SET penalties='0' LIMIT 1");

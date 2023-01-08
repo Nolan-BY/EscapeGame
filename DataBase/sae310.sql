@@ -24,13 +24,15 @@ CREATE TABLE IF NOT EXISTS `gamecontrol` (
   `hints` int(11) DEFAULT NULL,
   `finishdate` text DEFAULT NULL,
   `enddate` text DEFAULT NULL,
-  `result` text DEFAULT NULL
+  `result` text DEFAULT NULL,
+  `score` int(20) DEFAULT NULL,
+  `result_enigmas` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Listage des données de la table sae310.gamecontrol : ~1 rows (environ)
 /*!40000 ALTER TABLE `gamecontrol` DISABLE KEYS */;
-REPLACE INTO `gamecontrol` (`team_name`, `penalties`, `hints`, `finishdate`, `enddate`, `result`) VALUES
-	('none', 0, 6, 'none', 'none', 'none');
+REPLACE INTO `gamecontrol` (`team_name`, `penalties`, `hints`, `finishdate`, `enddate`, `result`, `score`, `result_enigmas`) VALUES
+	('none', 0, 6, 'none', 'none', 'none', NULL, NULL);
 /*!40000 ALTER TABLE `gamecontrol` ENABLE KEYS */;
 
 -- Listage de la structure de la table sae310. users

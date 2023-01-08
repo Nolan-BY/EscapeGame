@@ -71,19 +71,15 @@
 <script>
     var result = '<?php echo $_SESSION['result']; ?>';
 
-    // Need to retreive value from database based on enigmas success or fail
-    var result_enigmas = 0;
-
     if(result == 'win') {
         document.getElementById('result_text').style.color = 'rgb(0, 117, 6)';
-        result_enigmas += 20;
     } else if(result == 'lost') {
         document.getElementById('result_text').style.color = 'rgb(179, 0, 0)';
-        result_enigmas -= 50;
     }
 
     var penalties = 0;
     var hints = 0;
+    var score = 0;
     $.ajax({
         url:"./elements/penalties.php",
         async: false,
@@ -100,18 +96,19 @@
         }
     });
 
+    $.ajax({
+        url:"./elements/getScore.php",
+        async: false,
+        success:function(data){
+            score = data;
+        }
+    });
+
     var start = new Date(Date.parse('<?php echo $_SESSION['finishdate']; ?>')).getTime();
     var end = new Date(Date.parse('<?php echo $_SESSION['result_date']; ?>')).getTime();
     var timeRemaining = (start - (penalties * 1000)) - end;
     var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-    // Retreive from database
-    var score = Math.floor(((((minutes * 60) + seconds) * 100) / 1200) + result_enigmas - (5 * (hints)));
-
-    if(score < 0) {
-        score = 0;
-    }
 
     if(seconds < 0) {
         seconds = 0;

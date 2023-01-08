@@ -13,6 +13,8 @@
          $_SESSION['team_name'] = $_POST['team_name'];
          mysqli_query($con,"UPDATE gamecontrol SET team_name='".$_SESSION['team_name']."' LIMIT 1");
 
+         mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas + 5 LIMIT 1");
+
          $_SESSION['user'] = $_SESSION['team_name'];
 
          $hints = mysqli_fetch_array(mysqli_query($con, "SELECT hints FROM gamecontrol LIMIT 1"));
@@ -46,6 +48,8 @@
          header("location: ../board.php");
       } else {
          mysqli_query($con, "UPDATE gamecontrol SET penalties= penalties + 10 LIMIT 1");
+
+         mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas - 10 LIMIT 1");
 
          $penalties = mysqli_fetch_array(mysqli_query($con, "SELECT penalties FROM gamecontrol LIMIT 1"));
          $_SESSION['penalties'] = $penalties['penalties'];

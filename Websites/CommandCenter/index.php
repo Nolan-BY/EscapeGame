@@ -91,6 +91,7 @@
     var finishdate;
     var enddate;
     var result;
+    var score;
 
     var results_disp = false;
 
@@ -109,6 +110,7 @@
                 finishdate = data[0].finishdate;
                 enddate = data[0].enddate;
                 result = data[0].result;
+                score = Number(data[0].score);
             }
         });
 
@@ -142,19 +144,14 @@
             document.getElementById("timer").innerHTML = "<b>Escape Game terminé !</b>";
             document.getElementById('penalties').innerHTML = `<b>${penalties}</b> secondes de pénalité`;
 
-            // Need to retreive value from database based on enigmas success or fail
-            var result_enigmas = 0;
-
             document.getElementById('results_team').innerHTML = `Équipe &thinsp;<b>${team_name}</b>`;
 
             if (result == 'win') {
                 document.getElementById('results_status').innerHTML = "Victoire !";
                 document.getElementById('results_status').style.color = 'rgb(27, 201, 5)';
-                result_enigmas += 20;
             } else if (result == 'lost') {
                 document.getElementById('results_status').innerHTML = "Défaite !";
                 document.getElementById('results_status').style.color = 'rgb(179, 0, 0)';
-                result_enigmas -= 50;
             }
             
             var start = new Date(Date.parse(finishdate)).getTime();
@@ -165,20 +162,11 @@
 
             if (seconds < 0) {
                 seconds = 0;
+            } else if (seconds < 10) {
+                seconds = `0${seconds}`
             }
             if (minutes < 0) {
                 minutes = 0;
-            }
-
-            // Retreive from database
-            var score = Math.floor(((((minutes * 60) + seconds) * 100) / 1200) + result_enigmas - (5 * (6 - hints)));
-
-            if (score < 0) {
-                score = 0;
-            }
-
-            if (seconds < 10) {
-                seconds = `0${seconds}`
             }
 
             if (minutes > 1 && seconds > 1) {

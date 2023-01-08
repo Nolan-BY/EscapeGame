@@ -13,23 +13,25 @@
     date_default_timezone_set('Europe/Paris');
     $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-    $result_enigmas = -50;
+    mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas - 50 LIMIT 1");
 
     if($_SESSION['final_code'] == $_POST['final_code']) {
-        $result_enigmas = 0;
-        $result_enigmas += 20;
-    } else {
-        $result_enigmas = 0;
-        $result_enigmas -= 50;
+        mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas + 70 LIMIT 1");
     }
 
-    // $result_enigmas += mysqli_fetch_array(mysqli_query($con, "SELECT result_enigmas FROM gamecontrol LIMIT 1"))["result_enigmas"];
+    $result_enigmas = mysqli_fetch_array(mysqli_query($con, "SELECT result_enigmas FROM gamecontrol LIMIT 1"));
 
     $minutes = floor(($timeRemaining / 60));
     $seconds = $timeRemaining % 60;
-    $score = floor((((($minutes * 60) + $seconds) * 100) / 1200) + $result_enigmas - (5 * ($hints['hints'])));
+    $score = floor((((($minutes * 60) + $seconds) * 100) / 1200) + $result_enigmas["result_enigmas"] - (5 * ($hints['hints'])));
 
-    //mysqli_query($con,"UPDATE gamecontrol SET score='".$score."' LIMIT 1");
+    if ($score < 0) {
+        $score = 0;
+    }
+
+    $_SESSION['score'] = $score;
+    
+    mysqli_query($con,"UPDATE gamecontrol SET score='".$score."' LIMIT 1");
 
     if($_SERVER["REQUEST_METHOD"] == "POST") {
         if($_SESSION['final_code'] == $_POST['final_code']) {
