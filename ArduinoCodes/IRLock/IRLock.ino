@@ -3,16 +3,16 @@
 #include <SerialESP8266wifi.h>
 
 // Serial config
-#define sw_serial_rx_pin 11  // Pin to TX
-#define sw_serial_tx_pin 12  // Pin to RX
-#define esp8266_reset_pin 13 // Pin to CH_PD, not reset
+#define sw_serial_rx_pin A0  // Pin to TX
+#define sw_serial_tx_pin A1  // Pin to RX
+#define esp8266_reset_pin A2 // Pin to CH_PD, not reset
 SoftwareSerial swSerial(sw_serial_rx_pin, sw_serial_tx_pin);
 
 SerialESP8266wifi wifi(swSerial, swSerial, esp8266_reset_pin, Serial);
 
 // User config
-#define ssid "ArduinoEarth" // Wifi SSID
-#define password "chevre007" // Wifi Password
+#define ssid "Livebox-00F41" // Wifi SSID
+#define password "12526477CDDA43" // Wifi Password
 
 String inputString;
 
@@ -51,7 +51,7 @@ void setup() {
   wifi.endSendWithNewline(true);
   wifi.begin();
   wifi.connectToAP(ssid, password);
-  wifi.connectToServer("192.168.59.54", "9999");
+  wifi.connectToServer("192.168.1.35", "9999");
 }
 
 void loop() {
@@ -93,7 +93,7 @@ void loop() {
       delay(100);
       noTone(BUZZER);
       test_code = "";
-      wifi.send(SERVER, "LoF");
+      wifi.send(SERVER, "LoE");
       delay(1000); 
     }
   }
