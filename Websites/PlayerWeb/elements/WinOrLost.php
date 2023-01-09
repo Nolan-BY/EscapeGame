@@ -13,10 +13,10 @@
     date_default_timezone_set('Europe/Paris');
     $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-    mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas - 50 LIMIT 1");
+    mysqli_query($con, "UPDATE gamecontrol SET result_enigmas=result_enigmas-50 LIMIT 1");
 
     if($_SESSION['final_code'] == $_POST['final_code']) {
-        mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas + 70 LIMIT 1");
+        mysqli_query($con, "UPDATE gamecontrol SET result_enigmas=result_enigmas+70 LIMIT 1");
     }
 
     $result_enigmas = mysqli_fetch_array(mysqli_query($con, "SELECT result_enigmas FROM gamecontrol LIMIT 1"));
@@ -37,10 +37,12 @@
         if($_SESSION['final_code'] == $_POST['final_code']) {
             $_SESSION['result'] = 'win';
 
-            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r+');
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
             $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
             $logs = json_decode($logsData, true);
+
+            fclose($logsFile);
 
             $logs['logs'][] = array(
                 "id" => 'FCode'.strval($timeRemaining),
@@ -53,15 +55,19 @@
                 "score" => $score
             );
 
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+
             fwrite($logsFile, json_encode($logs));
             fclose($logsFile);
         } else {
             $_SESSION['result'] = 'lost';
 
-            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r+');
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
             $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
             $logs = json_decode($logsData, true);
+
+            fclose($logsFile);
 
             $logs['logs'][] = array(
                 "id" => 'FCode'.strval($timeRemaining),
@@ -74,16 +80,20 @@
                 "score" => $score
             );
 
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+
             fwrite($logsFile, json_encode($logs));
             fclose($logsFile);
         }
     } else {
         $_SESSION['result'] = 'lost';
 
-        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r+');
+        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
         $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
         $logs = json_decode($logsData, true);
+
+        fclose($logsFile);
 
         $logs['logs'][] = array(
             "id" => 'FCode'.strval($timeRemaining),
@@ -95,6 +105,8 @@
             "hints" => $_SESSION['hints'],
             "score" => $score
         );
+
+        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
 
         fwrite($logsFile, json_encode($logs));
         fclose($logsFile);

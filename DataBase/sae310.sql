@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `gamecontrol` (
 -- Listage des données de la table sae310.gamecontrol : ~1 rows (environ)
 /*!40000 ALTER TABLE `gamecontrol` DISABLE KEYS */;
 REPLACE INTO `gamecontrol` (`team_name`, `penalties`, `hints`, `finishdate`, `enddate`, `result`, `score`, `result_enigmas`) VALUES
-	('none', 0, 6, 'none', 'none', 'none', NULL, NULL);
+	('none', 0, 6, 'none', 'none', 'none', 0, 0);
 /*!40000 ALTER TABLE `gamecontrol` ENABLE KEYS */;
 
 -- Listage de la structure de la table sae310. users

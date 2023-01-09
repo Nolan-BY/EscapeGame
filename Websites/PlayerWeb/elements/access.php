@@ -13,7 +13,7 @@
          $_SESSION['team_name'] = $_POST['team_name'];
          mysqli_query($con,"UPDATE gamecontrol SET team_name='".$_SESSION['team_name']."' LIMIT 1");
 
-         mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas + 5 LIMIT 1");
+         mysqli_query($con, "UPDATE gamecontrol SET result_enigmas=result_enigmas+5 LIMIT 1");
 
          $_SESSION['user'] = $_SESSION['team_name'];
 
@@ -25,10 +25,12 @@
          date_default_timezone_set('Europe/Paris');
          $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r+');
+         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
          $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
          $logs = json_decode($logsData, true);
+
+         fclose($logsFile);
 
          $logs['logs'][] = array(
             "id" => 'Log'.strval($timeRemaining),
@@ -42,14 +44,16 @@
 
          $logs['team_name'] = $_SESSION['team_name'];
 
+         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+
          fwrite($logsFile, json_encode($logs));
          fclose($logsFile);
 
          header("location: ../board.php");
       } else {
-         mysqli_query($con, "UPDATE gamecontrol SET penalties= penalties + 10 LIMIT 1");
+         mysqli_query($con, "UPDATE gamecontrol SET penalties=penalties+10 LIMIT 1");
 
-         mysqli_query($con, "UPDATE gamecontrol SET result_enigmas= result_enigmas - 10 LIMIT 1");
+         mysqli_query($con, "UPDATE gamecontrol SET result_enigmas=result_enigmas-10 LIMIT 1");
 
          $penalties = mysqli_fetch_array(mysqli_query($con, "SELECT penalties FROM gamecontrol LIMIT 1"));
          $_SESSION['penalties'] = $penalties['penalties'];
@@ -59,10 +63,12 @@
          date_default_timezone_set('Europe/Paris');
          $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r+');
+         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
          $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
          $logs = json_decode($logsData, true);
+
+         fclose($logsFile);
 
          $logs['logs'][] = array(
             "id" => 'Log'.strval($timeRemaining),
@@ -73,6 +79,8 @@
             "penalties" => $_SESSION['penalties'],
             "hints" => $_SESSION['hints']
          );
+
+         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
 
          fwrite($logsFile, json_encode($logs));
          fclose($logsFile);
