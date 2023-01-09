@@ -25,29 +25,31 @@
          date_default_timezone_set('Europe/Paris');
          $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
-         $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
+         if (file_exists('/home/sae310/logs/game-logs.json')) {
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
+            $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
-         $logs = json_decode($logsData, true);
+            $logs = json_decode($logsData, true);
 
-         fclose($logsFile);
+            fclose($logsFile);
 
-         $logs['logs'][] = array(
-            "id" => 'Log'.strval($timeRemaining),
-            "enigma" => "Login",
-            "time" => date('H:i:s'),
-            "status" => "Réussie",
-            "time_left" => $timeRemaining,
-            "penalties" => $_SESSION['penalties'],
-            "hints" => $_SESSION['hints']
-         );
+            $logs['logs'][] = array(
+               "id" => 'Log'.strval($timeRemaining),
+               "enigma" => "Login",
+               "time" => date('H:i:s'),
+               "status" => "Réussie",
+               "time_left" => $timeRemaining,
+               "penalties" => $_SESSION['penalties'],
+               "hints" => $_SESSION['hints']
+            );
 
-         $logs['team_name'] = $_SESSION['team_name'];
+            $logs['team_name'] = $_SESSION['team_name'];
 
-         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
 
-         fwrite($logsFile, json_encode($logs));
-         fclose($logsFile);
+            fwrite($logsFile, json_encode($logs));
+            fclose($logsFile);
+         }
 
          header("location: ../board.php");
       } else {
@@ -63,27 +65,29 @@
          date_default_timezone_set('Europe/Paris');
          $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
-         $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
+         if (file_exists('/home/sae310/logs/game-logs.json')) {
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
+            $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
-         $logs = json_decode($logsData, true);
+            $logs = json_decode($logsData, true);
 
-         fclose($logsFile);
+            fclose($logsFile);
 
-         $logs['logs'][] = array(
-            "id" => 'Log'.strval($timeRemaining),
-            "enigma" => "Login",
-            "time" => date('H:i:s'),
-            "status" => "Échouée",
-            "time_left" => $timeRemaining,
-            "penalties" => $_SESSION['penalties'],
-            "hints" => $_SESSION['hints']
-         );
+            $logs['logs'][] = array(
+               "id" => 'Log'.strval($timeRemaining),
+               "enigma" => "Login",
+               "time" => date('H:i:s'),
+               "status" => "Échouée",
+               "time_left" => $timeRemaining,
+               "penalties" => $_SESSION['penalties'],
+               "hints" => $_SESSION['hints']
+            );
 
-         $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
 
-         fwrite($logsFile, json_encode($logs));
-         fclose($logsFile);
+            fwrite($logsFile, json_encode($logs));
+            fclose($logsFile);
+         }
 
          header("location: ../login.php");
       }

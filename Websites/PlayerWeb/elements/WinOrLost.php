@@ -37,31 +37,62 @@
         if($_SESSION['final_code'] == $_POST['final_code']) {
             $_SESSION['result'] = 'win';
 
-            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
-            $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
+            if (file_exists('/home/sae310/logs/game-logs.json')) {
+                $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
+                $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
-            $logs = json_decode($logsData, true);
+                $logs = json_decode($logsData, true);
 
-            fclose($logsFile);
+                fclose($logsFile);
 
-            $logs['logs'][] = array(
-                "id" => 'FCode'.strval($timeRemaining),
-                "enigma" => "Code Final",
-                "time" => date('H:i:s'),
-                "status" => "Réussie",
-                "time_left" => $timeRemaining,
-                "penalties" => $_SESSION['penalties'],
-                "hints" => $_SESSION['hints'],
-                "score" => $score
-            );
+                $logs['logs'][] = array(
+                    "id" => 'FCode'.strval($timeRemaining),
+                    "enigma" => "Code Final",
+                    "time" => date('H:i:s'),
+                    "status" => "Réussie",
+                    "time_left" => $timeRemaining,
+                    "penalties" => $_SESSION['penalties'],
+                    "hints" => $_SESSION['hints'],
+                    "score" => $score
+                );
 
-            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+                $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
 
-            fwrite($logsFile, json_encode($logs));
-            fclose($logsFile);
+                fwrite($logsFile, json_encode($logs));
+                fclose($logsFile);
+            }
         } else {
             $_SESSION['result'] = 'lost';
 
+            if (file_exists('/home/sae310/logs/game-logs.json')) {
+                $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
+                $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
+
+                $logs = json_decode($logsData, true);
+
+                fclose($logsFile);
+
+                $logs['logs'][] = array(
+                    "id" => 'FCode'.strval($timeRemaining),
+                    "enigma" => "Code Final",
+                    "time" => date('H:i:s'),
+                    "status" => "Échouée",
+                    "time_left" => $timeRemaining,
+                    "penalties" => $_SESSION['penalties'],
+                    "hints" => $_SESSION['hints'],
+                    "score" => $score
+                );
+
+                $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+
+                fwrite($logsFile, json_encode($logs));
+                fclose($logsFile);
+            }
+        }
+    } else {
+        $_SESSION['result'] = 'lost';
+
+        if (file_exists('/home/sae310/logs/game-logs.json')) {
             $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
             $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
@@ -85,31 +116,6 @@
             fwrite($logsFile, json_encode($logs));
             fclose($logsFile);
         }
-    } else {
-        $_SESSION['result'] = 'lost';
-
-        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
-        $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
-
-        $logs = json_decode($logsData, true);
-
-        fclose($logsFile);
-
-        $logs['logs'][] = array(
-            "id" => 'FCode'.strval($timeRemaining),
-            "enigma" => "Code Final",
-            "time" => date('H:i:s'),
-            "status" => "Échouée",
-            "time_left" => $timeRemaining,
-            "penalties" => $_SESSION['penalties'],
-            "hints" => $_SESSION['hints'],
-            "score" => $score
-        );
-
-        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
-
-        fwrite($logsFile, json_encode($logs));
-        fclose($logsFile);
     }
     header("location: ../results.php");
     mysqli_query($con,"UPDATE gamecontrol SET result='".$_SESSION['result']."' LIMIT 1");

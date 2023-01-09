@@ -11,27 +11,38 @@
         date_default_timezone_set('Europe/Paris');
         $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
         
-        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
-        $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
+        if (file_exists('/home/sae310/logs/game-logs.json')) {
+            $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
+            $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
 
-        $logs = json_decode($logsData, true);
+            $logs = json_decode($logsData, true);
 
-        fclose($logsFile);
+            fclose($logsFile);
 
-        $logs['logs'][] = array(
-            "id" => 'Hid'.strval($timeRemaining),
-            "enigma" => "Page cachée",
-            "time" => date('H:i:s'),
-            "status" => "Réussie",
-            "time_left" => $timeRemaining,
-            "penalties" => $_SESSION['penalties'],
-            "hints" => $_SESSION['hints']
-        );
+            $enigma_r_present = false;
+            for ($i = 0; $i < count($logs['logs']); $i++) {
+                if ($logs['logs'][$i]['enigma'] == "Page cachée" && $logs['logs'][$i]['status'] == "Réussie") {
+                    $enigma_r_present = true;
+                    break;
+                }
+            }
+            if (!$enigma_r_present) {
+                $logs['logs'][] = array(
+                    "id" => 'Hid'.strval($timeRemaining),
+                    "enigma" => "Page cachée",
+                    "time" => date('H:i:s'),
+                    "status" => "Réussie",
+                    "time_left" => $timeRemaining,
+                    "penalties" => $_SESSION['penalties'],
+                    "hints" => $_SESSION['hints']
+                );
+                
+                $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
 
-        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
-
-        fwrite($logsFile, json_encode($logs));
-        fclose($logsFile);
+                fwrite($logsFile, json_encode($logs));
+                fclose($logsFile);
+            }
+        }
     }
 ?>
 <!DOCTYPE html>
