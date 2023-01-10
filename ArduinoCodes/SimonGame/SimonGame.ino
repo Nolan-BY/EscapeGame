@@ -1,5 +1,6 @@
 #include <SoftwareSerial.h>
 #include <SerialESP8266wifi.h>
+#include <Servo.h>
 
 // Serial config
 #define sw_serial_rx_pin A0  // Pin to TX
@@ -15,6 +16,9 @@ SerialESP8266wifi wifi(swSerial, swSerial, esp8266_reset_pin, Serial);
 
 String inputString;
 
+Servo servo;
+int pos = 90;
+
 int y = 0;
 String reponse = "";
 
@@ -28,6 +32,8 @@ const int YELLOW_BTN = 9;
 const int RED_BTN = 10;
 const int BUZZER = 2;
 const int RESET = 13;
+
+const int SERVO = A5;
 
 const char* codes[] = {"4,5,3", "4,5,3,6,5,4,5", "4,5,3,6,5,4,5,6,3,4,6", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4,5,3,6,5"};
 struct Note {
@@ -44,9 +50,12 @@ Note notes[] = {
 unsigned long startTime;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   inputString.reserve(20);
-  swSerial.begin(9600);
+  swSerial.begin(115200);
+
+  servo.attach(SERVO);
+  servo.write(pos);
 
   pinMode(GREEN, OUTPUT);
   pinMode(BLUE, OUTPUT);
@@ -204,7 +213,7 @@ void doCode(char* code_source) {
 
 
 void win() {
-  wifi.send(SERVER, "SiR");
+  servoOpen();
   for (int i = 0; i<4; i++) {
     digitalWrite(GREEN, HIGH);
     digitalWrite(BLUE, HIGH);
@@ -218,6 +227,27 @@ void win() {
     digitalWrite(YELLOW, LOW);
     digitalWrite(RED, LOW);
     delay(500);
+  }
+  wifi.send(SERVER, "SiR");
+  delay(50000);
+  digitalWrite(RED, HIGH);
+  tone(BUZZER, 500, 250);
+  servoClose();
+  noTone(BUZZER);
+  digitalWrite(RED, LOW);
+}
+
+void servoOpen() {
+  for (pos = 90; pos <= 180; pos += 1) {
+    servo.write(pos);
+    delay(15);
+  }
+}
+
+void servoClose() {
+  for (pos = 180; pos >= 90; pos -= 1) {
+    servo.write(pos);
+    delay(15);
   }
 }
 
