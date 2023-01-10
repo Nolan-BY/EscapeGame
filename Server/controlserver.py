@@ -33,7 +33,8 @@ class ServeurTCP():
     def traitement_connexion(self, connexion, adresse):
         enigmas = {"Sy": "Sismomètre",
                     "Lo": "Verrou IR",
-                    "Si": "Simon"}
+                    "Si": "Simon",
+                    "As": "Asterisk"}
         
         status = {"R": "Réussie",
                     "E": "Échouée"}
@@ -50,7 +51,7 @@ class ServeurTCP():
                 elif message in ["SyE", "SyR"]:
                     self.arduino.send(message.encode())
                 
-                if message in ["SyR", "LoR", "LoE", "SiR", "SiE"]:
+                if message in ["SyR", "LoR", "LoE", "SiR", "SiE", "AsR"]:
                     db = sql.connect(host="127.0.0.1", database='sae310', user="control", password="controlsae310")
                     cursor = db.cursor()
                     cursor.execute("SELECT result FROM gamecontrol LIMIT 1")

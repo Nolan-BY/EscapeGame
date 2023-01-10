@@ -266,13 +266,18 @@
                                 statusParagraph.style.color = "green";
                             }
 
-                            time_left_minutes = Math.floor((log.time_left / 60));
-                            time_left_seconds = (log.time_left % 60);
-                            if (time_left_minutes < 10) {
-                                time_left_minutes = `0${time_left_minutes}`
-                            }
-                            if (time_left_seconds < 10) {
-                                time_left_seconds = `0${time_left_seconds}`
+                            if (log.time_left <= 0) {
+                                time_left_minutes = "00"
+                                time_left_seconds = "00"
+                            } else {
+                                time_left_minutes = Math.floor((log.time_left / 60));
+                                time_left_seconds = (log.time_left % 60);
+                                if (time_left_minutes < 10) {
+                                    time_left_minutes = `0${time_left_minutes}`
+                                }
+                                if (time_left_seconds < 10) {
+                                    time_left_seconds = `0${time_left_seconds}`
+                                }
                             }
                             const timeLeftText = document.createTextNode(time_left_minutes + ":" + time_left_seconds);
 
