@@ -67,7 +67,7 @@
     </footer>
 </body>
 </html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="./js/jquery-3.6.3.min.js"></script>
 <script>
     var result = '<?php echo $_SESSION['result']; ?>';
 
