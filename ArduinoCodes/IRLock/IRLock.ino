@@ -60,7 +60,7 @@ void loop() {
 
   if (test_code.length() != code.length()) {
     if (Receiver.decode(&decodedir)) {
-      msg = decode_ir.value, HEX;
+      msg = decode_ir.value;
       Serial.println(msg);
       
       if (msg.substring(0, 3) == "167") {
