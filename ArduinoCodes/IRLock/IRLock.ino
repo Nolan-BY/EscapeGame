@@ -12,21 +12,18 @@ SerialESP8266wifi wifi(swSerial, swSerial, esp8266_reset_pin, Serial);
 
 // User config
 #define ssid "ArduinoEarth" // Wifi SSID
-#define password "totoearth" // Wifi Password
+#define password "chevre007" // Wifi Password
 
 String inputString;
 
-const int broche_reception = 7; // Broche 10 utilisée pour la réception
-IRrecv reception_ir(broche_reception); // Crée une instance de réception
-decode_results decode_ir; // Décodage et stockage des données reçues
+int broche_reception = 11; // Broche 10 utilisée pour la réception
+IRrecv Receiver(broche_reception); // Crée une instance de réception
+decode_results decodedir;
 
 // Initialisation du bon code à avoir
-// String code = "167180551671805516718055";
 String code = "1671805516718055167430451672417516738455";
 String test_code = "";
 String msg = "";
-
-int keys = 0;
 
 const int BLUE = 2;
 const int RED = 3;
@@ -39,7 +36,7 @@ void setup() {
   swSerial.begin(9600);
   inputString.reserve(20);
   
-  reception_ir.enableIRIn(); // Démarre la réception
+  Receiver.enableIRIn(); // Démarre la réception
   pinMode(BLUE, OUTPUT); // Led bleue pour retour utilisateur lorsqu'une touche est pressée
   pinMode(RED, OUTPUT); // Led rouge pour erreur dans le code
   pinMode(GREEN, OUTPUT); // Led verte pour code bon
@@ -53,45 +50,41 @@ void setup() {
   wifi.endSendWithNewline(true);
   wifi.begin();
   wifi.connectToAP(ssid, password);
-  wifi.connectToServer("10.11.5.10", "9999");
+  wifi.connectToServer("192.168.122.103", "9999");
 }
 
 void loop() {
-  // if (!wifi.isStarted()) {
-  //   wifi.begin();
-  // }
+  if (!wifi.isStarted()) {
+    wifi.begin();
+  }
 
   if (test_code.length() != code.length()) {
-    if (reception_ir.decode(&decode_ir)) {
-      uint32_t msg = decode_ir.value;
-      String msgstr;
-      msgstr = String(int(msg));
-      Serial.println(msgstr);
+    if (Receiver.decode(&decodedir)) {
+      msg = decode_ir.value;
+      Serial.println(msg);
       
-      if (keys != 5) {
-        test_code.concat(msgstr);
+      if (msg.substring(0, 3) == "167") {
+        test_code.concat(msg);
         Serial.println(test_code);
         digitalWrite(BLUE, HIGH);
         tone(BUZZER, 300, 50);
         delay(100);
         noTone(BUZZER);
         delay(100);
-        keys += 1;
       }
-      reception_ir.resume(); // Reçoit le prochain code
+      Receiver.resume(); // Reçoit le prochain code
     }
   }
   else {
     if (test_code == code) {
       digitalWrite(GREEN, HIGH);
       analogWrite(LOCK, LOW);
-      tone(BUZZER, 400, 100);
+      tone(BUZZER, 400, 250);
       delay(500);
       noTone(BUZZER);
       test_code = "";
-      // wifi.send(SERVER, "LoR");
+      wifi.send(SERVER, "LoR");
       delay(10000);
-      keys = 0;
     }
     else {
       digitalWrite(RED, HIGH);
@@ -99,9 +92,8 @@ void loop() {
       delay(100);
       noTone(BUZZER);
       test_code = "";
-      // wifi.send(SERVER, "LoE");
-      delay(1000); 
-      keys = 0;
+      wifi.send(SERVER, "LoE");
+      delay(1000);
     }
   }
 

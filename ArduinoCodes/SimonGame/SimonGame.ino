@@ -35,6 +35,7 @@ const int RESET = 13;
 
 const int SERVO = A5;
 
+// const char* codes[] = {"3", "4", "5", "6", "3"};
 const char* codes[] = {"4,5,3", "4,5,3,6,5,4,5", "4,5,3,6,5,4,5,6,3,4,6", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4", "4,5,3,6,5,4,5,6,3,4,6,4,6,3,6,4,5,3,6,5"};
 struct Note {
   int frequency;
@@ -50,9 +51,9 @@ Note notes[] = {
 unsigned long startTime;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   inputString.reserve(20);
-  swSerial.begin(115200);
+  swSerial.begin(9600);
 
   servo.attach(SERVO);
   servo.write(pos);

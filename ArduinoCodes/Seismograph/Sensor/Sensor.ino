@@ -39,7 +39,7 @@ void setup() {
   wifi.endSendWithNewline(false);
   wifi.begin();
   wifi.connectToAP(ssid, password);
-  wifi.connectToServer("192.168.59.54", "9999");
+  wifi.connectToServer("192.168.254.85", "9990");
 }
 
 void loop() {

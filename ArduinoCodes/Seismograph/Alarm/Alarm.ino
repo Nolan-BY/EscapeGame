@@ -25,7 +25,6 @@ bool alarm_state = false;
 void setup() {
   Serial.begin(9600);
   swSerial.begin(9600);
-  AT.begin(9600);
   pinMode(LED, OUTPUT);
   pinMode(BUZZER, OUTPUT);
   Oled.begin();
@@ -37,10 +36,17 @@ void setup() {
   wifi.endSendWithNewline(true);
   wifi.begin();
   wifi.connectToAP(ssid, password);
+  wifi.getIP();
   wifi.startLocalServer("9990");
+
+  AT.begin(9600);
 }
 
 void loop() {
+  if (!wifi.isStarted()) {
+    wifi.begin();
+    wifi.getIP();
+  }
   while (AT.available() > 0) {
     String message = AT.readString();
     if (message.indexOf("SyR") >= 1) {
@@ -64,7 +70,7 @@ void Alarm(){
     Oled.setCursor(35, 33);
     Oled.print("ALERTE");
     Oled.setCursor(50, 53);
-    Oled.print("DETECTEE !");
+    Oled.print("/hidden.php");
     Oled.refreshDisplay();
     delay(1000);
     digitalWrite(LED, LOW);
@@ -72,7 +78,7 @@ void Alarm(){
     Oled.setCursor(35, 33);
     Oled.print("ALERTE");
     Oled.setCursor(50, 53);
-    Oled.print("        ");
+    Oled.print("            ");
     Oled.refreshDisplay();
     delay(1000);
   }
@@ -83,7 +89,7 @@ void Alarm(){
     Oled.setCursor(35, 33);
     Oled.print("        ");
     Oled.setCursor(50, 53);
-    Oled.print("           "); 
+    Oled.print("             "); 
     Oled.setCursor(0, 43);
     Oled.print("Aucune alerte!");
     Oled.refreshDisplay();
