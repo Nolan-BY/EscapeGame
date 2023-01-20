@@ -27,7 +27,7 @@
         <p>Une erreur est survenue en essayant de charger cette page<br>Essayez une autre page</p>
     </div>
     <footer>
-        <p style="margin-bottom: 0;">Copyright 2022 - Meilleur groupe du TP1<br><p style="font-size: 0.5rem;">Ou le code source de la page...</p></p>
+        <p style="margin-bottom: 0;">Copyright 2023 - Meilleur groupe du TP1<br><p style="font-size: 0.5rem;">Ou le code source de la page...</p></p>
     </footer>
 </body>
 </html>

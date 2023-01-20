@@ -14,7 +14,7 @@
 
     if (!isset($_SESSION['finishdate'])) {
         date_default_timezone_set('Europe/Paris');
-        $_SESSION['finishdate'] = date("r", strtotime("+1200 sec"));
+        $_SESSION['finishdate'] = date("r", strtotime("+1800 sec"));
         mysqli_query($con,"UPDATE gamecontrol SET finishdate='".$_SESSION['finishdate']."' LIMIT 1");
 
         date_default_timezone_set('Europe/Paris');

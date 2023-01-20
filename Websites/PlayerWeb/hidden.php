@@ -83,7 +83,7 @@
         <a id="mas" target="_blank" href="./assets/urgent_contact.pdf">Marche à suivre</a>
     </main>
     <footer style="position: relative;">
-        <p>Copyright 2022 - Meilleur groupe du TP1</p>
+        <p>Copyright 2023 - Meilleur groupe du TP1</p>
     </footer>
 </body>
 </html>
