@@ -4,12 +4,12 @@
 
     if (!isset($_SESSION['penalties'])) {
         $penalties = mysqli_fetch_array(mysqli_query($con, "SELECT penalties FROM gamecontrol LIMIT 1"));
-        $_SESSION['penalties'] = $penalties['penalties'];
+        $_SESSION['penalties'] = intval($penalties['penalties']);
     }
 
     if (!isset($_SESSION['hints'])) {
         $hints = mysqli_fetch_array(mysqli_query($con, "SELECT hints FROM gamecontrol LIMIT 1"));
-        $_SESSION['hints'] = $hints['hints'];
+        $_SESSION['hints'] = intval($hints['hints']);
     }
 
     if (!isset($_SESSION['finishdate'])) {
@@ -18,7 +18,7 @@
         mysqli_query($con,"UPDATE gamecontrol SET finishdate='".$_SESSION['finishdate']."' LIMIT 1");
 
         date_default_timezone_set('Europe/Paris');
-        $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
+        $timeRemaining = ((strtotime($_SESSION['finishdate']) - intval($penalties['penalties'])) - strtotime(date("r")));
 
         $game_logs = '/home/escape_game/logs/game-logs.json';
         $logsFile = fopen($game_logs, 'w');
@@ -31,8 +31,8 @@
                 "time" => date('H:i:s'),
                 "status" => "Résolue",
                 "time_left" => $timeRemaining,
-                "penalties" => $penalties['penalties'],
-                "hints" => $hints['hints']
+                "penalties" => intval($penalties['penalties']),
+                "hints" => intval($hints['hints'])
                 )
             ]
         );
@@ -43,5 +43,5 @@
 
     if (!isset($_SESSION['final_code'])) {
         $final_code = mysqli_fetch_array(mysqli_query($con, "SELECT final_code FROM gamecontrol LIMIT 1"));
-        $_SESSION['final_code'] = $final_code['final_code'];
+        $_SESSION['final_code'] = intval($final_code['final_code']);
     }

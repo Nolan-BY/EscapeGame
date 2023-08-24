@@ -3,20 +3,20 @@
     include "config.php";
     session_start();
     $hints = mysqli_fetch_array(mysqli_query($con, "SELECT hints FROM gamecontrol LIMIT 1"));
-    $_SESSION['hints'] = $hints['hints'];
+    $_SESSION['hints'] = intval($hints['hints']);
     if($hints['hints'] > 0) {
         mysqli_query($con, "UPDATE gamecontrol SET hints=hints-1 LIMIT 1");
         mysqli_query($con, "UPDATE gamecontrol SET penalties=penalties+10 LIMIT 1");
     }
 
     $hints = mysqli_fetch_array(mysqli_query($con, "SELECT hints FROM gamecontrol LIMIT 1"));
-    $_SESSION['hints'] = $hints['hints'];
+    $_SESSION['hints'] = intval($hints['hints']);
 
     $penalties = mysqli_fetch_array(mysqli_query($con, "SELECT penalties FROM gamecontrol LIMIT 1"));
-    $_SESSION['penalties'] = $penalties['penalties'];
+    $_SESSION['penalties'] = intval($penalties['penalties']);
 
     date_default_timezone_set('Europe/Paris');
-    $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
+    $timeRemaining = ((strtotime($_SESSION['finishdate']) - $_SESSION['penalties']) - strtotime(date("r")));
 
     if (file_exists('/home/escape_game/logs/game-logs.json')) {
         $logsFile = fopen('/home/escape_game/logs/game-logs.json', 'r');
