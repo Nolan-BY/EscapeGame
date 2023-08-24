@@ -1,10 +1,10 @@
 <?php
     $host = "127.0.0.1:3306";
-    $user = "control";
-    $password = "controlsae310";
-    $dbname = "sae310";
+    $user = "controlEG";
+    $password = "controlEGPa55";
+    $dbname = "escape_game_DB";
 
     $con = mysqli_connect($host, $user, $password, $dbname);
     if (!$con) {
-        die("Erreur de connexion : " . mysqli_connect_error());
+        die("Connection error : " . mysqli_connect_error());
     }

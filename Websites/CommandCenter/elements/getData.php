@@ -2,16 +2,16 @@
 
     include "config.php";
 
-    // exécution d'une requête à la base de données pour récupérer les informations souhaitées
+    // Database query to retrieve the desired information
     $result = mysqli_query($con, "SELECT team_name, penalties, hints, finishdate, enddate, result, score FROM gamecontrol");
 
-    // création d'un tableau pour stocker les résultats de la requête
+    // Array creation to store query results
     $data = array();
 
-    // ajout des résultats de la requête au tableau
+    // Add query results to table
     while ($row = mysqli_fetch_assoc($result)) {
         $data[] = $row;
     }
 
-    // renvoi des données sous forme de JSON
+    // Return data as JSON
     echo json_encode($data);

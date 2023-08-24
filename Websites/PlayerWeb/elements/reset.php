@@ -4,9 +4,9 @@
 
     include "config.php";
 
-    $game_logs = '/home/sae310/logs/game-logs.json';
+    $game_logs = '/home/escape_game/logs/game-logs.json';
 
-    copy($game_logs, '/home/sae310/logs-archives/'.$_SESSION['team_name'].'-logs.json');
+    copy($game_logs, '/home/escape_game/logs-archives/'.$_SESSION['team_name'].'-logs.json');
     unlink($game_logs);
 
     if (isset($_SESSION['score'])) {
@@ -15,6 +15,11 @@
     }
 
     mysqli_query($con, "UPDATE gamecontrol SET result_enigmas='0' LIMIT 1");
+
+    if (isset($_SESSION['final_code'])) {
+        unset($_SESSION['final_code']);
+        mysqli_query($con,"UPDATE gamecontrol SET final_code='30035' LIMIT 1");
+    }
 
     if (isset($_SESSION['penalties'])) {
         unset($_SESSION['penalties']);

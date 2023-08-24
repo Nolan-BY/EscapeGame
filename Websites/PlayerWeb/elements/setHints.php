@@ -18,9 +18,9 @@
     date_default_timezone_set('Europe/Paris');
     $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-    if (file_exists('/home/sae310/logs/game-logs.json')) {
-        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'r');
-        $logsData = file_get_contents('/home/sae310/logs/game-logs.json');
+    if (file_exists('/home/escape_game/logs/game-logs.json')) {
+        $logsFile = fopen('/home/escape_game/logs/game-logs.json', 'r');
+        $logsData = file_get_contents('/home/escape_game/logs/game-logs.json');
 
         $logs = json_decode($logsData, true);
 
@@ -36,7 +36,7 @@
             "hints" => $_SESSION['hints']
         );
 
-        $logsFile = fopen('/home/sae310/logs/game-logs.json', 'w');
+        $logsFile = fopen('/home/escape_game/logs/game-logs.json', 'w');
 
         fwrite($logsFile, json_encode($logs));
         fclose($logsFile);

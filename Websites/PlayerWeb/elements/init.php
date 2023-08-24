@@ -20,7 +20,7 @@
         date_default_timezone_set('Europe/Paris');
         $timeRemaining = ((strtotime($_SESSION['finishdate']) - $penalties['penalties']) - strtotime(date("r")));
 
-        $game_logs = '/home/sae310/logs/game-logs.json';
+        $game_logs = '/home/escape_game/logs/game-logs.json';
         $logsFile = fopen($game_logs, 'w');
 
         $logs = array(
@@ -42,5 +42,6 @@
     }
 
     if (!isset($_SESSION['final_code'])) {
-        $_SESSION['final_code'] = 30035;
+        $final_code = mysqli_fetch_array(mysqli_query($con, "SELECT final_code FROM gamecontrol LIMIT 1"));
+        $_SESSION['final_code'] = $final_code['final_code'];
     }
