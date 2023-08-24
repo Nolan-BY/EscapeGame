@@ -1,8 +1,8 @@
 <h1 align="center">R&T EscapeGame
   <br>
-  <img src="https://badgen.net/static/status/Server%20Redo%20In%20Progress/orange" alt="Server redo in progress">
-  <img src="https://badgen.net/static/version/0.9.9/blue" alt="Version 0.9.9">
-  <img src="https://badgen.net/static/buildable/No/red" alt="Not buildable">
+  <img src="https://badgen.net/static/status/Documentation%20In%20Progress/orange" alt="Documentation in progress">
+  <img src="https://badgen.net/static/version/1.0.0/blue" alt="Version 1.0.09">
+  <img src="https://badgen.net/static/buildable/Kinda/red" alt="Kinda buildable">
   <a href="https://github.com/Nolan-BY/EscapeGame/blob/main/LICENSE"><img src="https://badgen.net/static/license/GPL-3.0/purple" alt="License"></a>
 </h1>
 
