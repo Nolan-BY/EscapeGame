@@ -11,4 +11,5 @@ Versions of the escape game currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-Use the issues tab to report a vulnerability with the vunerability tag.
+If you have found a vulnerability in the code that could lead to an exploit from the players of the game or a larger security breach, you should help us solve this issue and report it as soon as you notice it.
+Use the issues tab to report a vulnerability using the "<b>Possible Vunerability</b>" label.
