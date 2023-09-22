@@ -13,5 +13,5 @@
 </p>
 
 <div align="center">
-  <a href="https://youtu.be/hQPirTYJ55A">Presentation Video</a>
+  <a href="https://youtu.be/hQPirTYJ55A">Presentation Video</a> | <a href="https://youtu.be/tbT2aAykv50">Commit History</a>
 </div>
